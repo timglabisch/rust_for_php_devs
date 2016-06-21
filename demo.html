@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js – The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+		<script src="jquery-3.0.0.min.js"></script>
+	</head>
+
+
+	<script type="application/javascript">
+		$(document).ready(function() {
+			$('.editor').each(function (i, v) {
+				var code = encodeURIComponent($(v).html().trim());
+				$(v).html('');
+				$(v).append($('<iframe style="width:100%;height:600px"/>').attr('src', 'https://play.rust-lang.org/?code=' + code));
+			});
+		});
+
+
+	</script>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+				<section style="text-align: left;">
+
+					<h1>Rust for PHP devs</h1>
+
+				</section>
+
+				<section>
+					<img src="oh_no.png"/>
+				</section>
+
+				<section>
+					<img src="ich.jpeg">
+				</section>
+
+				<section>
+					<img src="more_than_a_hype.jpg"/>
+				</section>
+
+
+				<section style="text-align: left;">
+
+					<div class="editor">
+pub fn main() {
+	println!("{}", "Hello PHPUG!");
+}
+					</div>
+
+				</section>
+
+				<section>
+
+					<div class="editor">
+pub fn main() {
+	let foo = "bar";
+
+	println!("Hello {}", foo);
+}
+					</div>
+
+				</section>
+
+				<section>
+
+					<div class="editor">
+pub fn greet(name : String) {
+	println!("Hello {}", name);
+}
+
+pub fn main() {
+	let name = "PHPUG".to_string();
+
+	greet(name);
+}
+					</div>
+
+				</section>
+
+				<section>
+
+					<div class="editor">
+struct Person {
+	pub age: i32
+}
+
+pub fn main() {
+	let tim = Person { age: 25 };
+
+	println!("tim is {} years old", tim.age);
+}
+					</div>
+
+				</section>
+
+				<section>
+
+					<div class="editor">
+struct Person {
+	age: i32
+}
+
+impl Person {
+	pub fn new(age : i32) -> Person {
+		Person {
+			age: age
+		}
+	}
+}
+
+pub fn main() {
+	let tim = Person::new(25);
+
+	println!("tim is {} years old", tim.age);
+}
+					</div>
+
+				</section>
+
+				<section>
+					<h3>Warum Rust?</h3>
+				</section>
+
+				<section>
+					<img src="mozilla.png">
+				</section>
+
+				<section>
+					<h2>
+						Der ganze wichtige Kram
+					</h2>
+					<h1>
+						ist in C / C++
+					</h1>
+					<h2>
+						geschrieben
+					</h2>
+
+					<div class="notes">
+						Warum ist das eigentlich so?
+						Mozilla beispielsweise hat das Problem, dass es Firefox maintaint.
+						Firefox ist ein gewaltiges C++ Projekt.
+						Trotz enormer sorgfalt, gibt es immer wieder segaults und sicherheitsprobleme mit dem speichermanagement.
+						threading ist unheimlich hart (dadurch oft nicht optimal eingesetzt u.s.w.)
+						Warum aber muss Mozilla C++ oder C für den Firefox verwenden?
+
+						vergleichen wir doch mal unterschiedliche Sprachen...
+					</div>
+				</section>
+
+
+				<section>
+					<table>
+						<tr>
+							<td>Sprache</td>
+							<td>Web</td>
+							<td>Treiber</td>
+							<td>OOP</td>
+							<td>Typed</td>
+							<td>Interpreter</td>
+							<td>Jit</td>
+							<td>Native</td>
+							<td>GC</td>
+							<td>Geschrieben in</td>
+						</tr>
+						<tr>
+							<td>PHP</td>
+							<td>X</td>
+							<td>-</td>
+							<td>X</td>
+							<td>-</td>
+							<td>X</td>
+							<td>-</td>
+							<td>-</td>
+							<td>X</td>
+							<td>C</td>
+						</tr>
+						<tr>
+							<td>Perl</td>
+							<td>mhm</td>
+							<td>-</td>
+							<td>X</td>
+							<td>-</td>
+							<td>X</td>
+							<td>-</td>
+							<td>-</td>
+							<td>X</td>
+							<td>C</td>
+						</tr>
+						<tr>
+							<td>Java</td>
+							<td>X</td>
+							<td>-</td>
+							<td>X</td>
+							<td>X</td>
+							<td>X</td>
+							<td>-</td>
+							<td>-</td>
+							<td>X</td>
+							<td>C</td>
+						</tr>
+						<tr>
+							<td>Python</td>
+							<td>X</td>
+							<td>-</td>
+							<td>X</td>
+							<td>-</td>
+							<td>X</td>
+							<td>-</td>
+							<td>-</td>
+							<td>X</td>
+							<td>C</td>
+						</tr>
+						<tr>
+							<td>Swift</td>
+							<td>X</td>
+							<td>-</td>
+							<td>X</td>
+							<td>X</td>
+							<td>-</td>
+							<td>-</td>
+							<td>X</td>
+							<td>X</td>
+							<td>C++</td>
+						</tr>
+						<tr>
+							<td>C++</td>
+							<td>mhm</td>
+							<td>X</td>
+							<td>X</td>
+							<td>X</td>
+							<td>-</td>
+							<td>-</td>
+							<td>X</td>
+							<td>-</td>
+							<td>C</td>
+						</tr>
+						<tr>
+							<td>Scala</td>
+							<td>X</td>
+							<td>-</td>
+							<td>X</td>
+							<td>X</td>
+							<td>X</td>
+							<td>-</td>
+							<td>-</td>
+							<td>X</td>
+							<td>C</td>
+						</tr>
+						<tr>
+							<td>C#</td>
+							<td>X</td>
+							<td>-</td>
+							<td>X</td>
+							<td>X</td>
+							<td>X</td>
+							<td>-</td>
+							<td>-</td>
+							<td>X</td>
+							<td>C++</td>
+						</tr>
+
+						<tr>
+							<td>Ruby</td>
+							<td>X</td>
+							<td>-</td>
+							<td>X</td>
+							<td>-</td>
+							<td>X</td>
+							<td>-</td>
+							<td>-</td>
+							<td>X</td>
+							<td>C</td>
+						</tr>
+
+						<tr>
+							<td>C</td>
+							<td>mhm</td>
+							<td>X</td>
+							<td>-</td>
+							<td>X</td>
+							<td>-</td>
+							<td>-</td>
+							<td>X</td>
+							<td>-</td>
+							<td>C</td>
+						</tr>
+
+						<tr>
+							<td>JS (V8)</td>
+							<td>X</td>
+							<td>-</td>
+							<td>X</td>
+							<td>-</td>
+							<td>X</td>
+							<td>X</td>
+							<td>-</td>
+							<td>X</td>
+							<td>C++</td>
+						</tr>
+
+						<tr>
+							<td>GO</td>
+							<td>X</td>
+							<td>-</td>
+							<td>X</td>
+							<td>X</td>
+							<td>-</td>
+							<td>-</td>
+							<td>X</td>
+							<td>X</td>
+							<td>GO</td>
+						</tr>
+
+						<tr>
+							<td>Rust</td>
+							<td>X</td>
+							<td>X</td>
+							<td>X</td>
+							<td>X</td>
+							<td>-</td>
+							<td>-</td>
+							<td>X</td>
+							<td>-</td>
+							<td>Rust</td>
+						</tr>
+					</table>
+					<div class="notes">
+						Stell dir vor, du bist Mozilla.
+						Welche Sprache würdest du verwenden um den Next Gen. Firefox zu bauen?
+					</div>
+				</section>
+
+				<section>
+					<img style="width:70%" src="written_in_c.png"/>
+					<div class="notes">
+						Vor dem Problem steht nicht nur Mozilla.
+						Fast jede wirklich wichtige Basistechnologie ist in C / C++ geschrieben
+					</div>
+				</section>
+
+				<section>
+					<h1>
+						Warum?
+					</h1>
+					<div class="notes">
+						Performance
+						Kontroller
+					</div>
+				</section>
+
+				<section>
+					<h1>
+						Warum macht C / C++ keinen Spass?
+					</h1>
+					<h2>
+						Können wir das heute nicht besser?
+					</h2>
+				</section>
+
+				<section>
+					<h2>
+						Warum macht C / C++ keinen Spass? (Fehlerhandling)
+					</h2>
+					<img src="cpp_error_messages.png"/>
+				</section>
+
+				<section>
+					<h2>
+						Warum macht C / C++ keinen Spass? (Fehlerhandling)
+					</h2>
+					<img src="cpp_error_messages2.png"/>
+				</section>
+
+				<section>
+					<h1>
+						Kein sinnvoller IDE Support.
+					</h1>
+				</section>
+
+				<section>
+					<h1>
+						Kein "Composer".
+					</h1>
+				</section>
+
+				<section>
+					<h1>
+						Memory Management.
+					</h1>
+				</section>
+
+				<section>
+					<h1>
+						Overflows / Security.
+					</h1>
+				</section>
+
+
+				<section>
+					Was müsste eine Sprache bieten, um C / C++ hier zu ersetzen?
+				</section>
+
+				<section>
+					Rust is as lowlevel as C / C++.
+				</section>
+
+				<section>
+					<h1>
+						Was bedeutet eigentlich kein GC?
+					</h1>
+				</section>
+
+
+				<section>
+					<pre>
+						public function getText() {
+							return "Hallo Welt";     // Im Ram wird eine zval für den String angelegt. Counter steht auf 1.
+						}
+
+						public function doSomething() {
+							$text = getText();           // Im Ram wird eine zval für den String angelegt. Counter steht auf 1.
+							echo $text;                  // Text wird ausgegeben.
+						}
+
+						doSomething();
+
+						// GC Rennt und prüft ob die "Strings" noch "Aufrufbar" sind.
+
+					</pre>
+					<div class="notes">
+						Was für Probleme bringt das mit?
+					</div>
+				</section>
+
+				<section>
+					<pre>
+#include<stdio.h>
+#include<stdlib.h>
+
+int main() {
+
+	char *str = (char *) malloc(sizeof(char) * 3);
+	str[0] = 'a';
+	str[1] = 'b';
+	str[2] = '\0';
+
+	printf("%s",str);
+
+	return 0;
+}
+					</pre>
+					<div class="notes">
+						gcc -c main.c
+					</div>
+				</section>
+
+				<section>
+					<pre>
+/usr/local/Cellar/valgrind/HEAD/bin/valgrind --tool=memcheck ./a.out
+==6343== Memcheck, a memory error detector
+==6343== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==6343== Using Valgrind-3.12.0.SVN and LibVEX; rerun with -h for copyright info
+==6343== Command: ./a.out
+==6343==
+ab==6343==
+==6343== HEAP SUMMARY:
+==6343==     in use at exit: 38,722 bytes in 416 blocks
+==6343==   total heap usage: 516 allocs, 100 frees, 45,698 bytes allocated
+==6343==
+==6343== LEAK SUMMARY:
+==6343==    definitely lost: 3 bytes in 1 blocks
+==6343==    indirectly lost: 0 bytes in 0 blocks
+==6343==      possibly lost: 0 bytes in 0 blocks
+==6343==    still reachable: 0 bytes in 0 blocks
+==6343==         suppressed: 38,719 bytes in 415 blocks
+==6343== Rerun with --leak-check=full to see details of leaked memory
+==6343==
+==6343== For counts of detected and suppressed errors, rerun with: -v
+==6343== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+					</pre>
+					<div class="notes">
+						gcc -c main.c
+					</div>
+				</section>
+				<section>
+					<pre>
+➜  c1 /usr/local/Cellar/valgrind/HEAD/bin/valgrind --tool=memcheck ./a.out
+#include<stdio.h>
+#include<stdlib.h>
+
+int main() {
+
+    char *str = (char *) malloc(sizeof(char) * 3);
+    str[0] = 'a';
+    str[1] = 'b';
+    str[2] = '\0';
+
+    printf("%s",str);
+
+    free(str);
+
+    return 0;
+}
+					</pre>
+					<div class="notes">
+						mit free
+					</div>
+				</section>
+				<section>
+					<pre>
+/usr/local/Cellar/valgrind/HEAD/bin/valgrind --tool=memcheck ./a.out
+==6458== Memcheck, a memory error detector
+==6458== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==6458== Using Valgrind-3.12.0.SVN and LibVEX; rerun with -h for copyright info
+==6458== Command: ./a.out
+==6458==
+--6458-- run: /usr/bin/dsymutil "./a.out"
+warning: no debug symbols in executable (-arch x86_64)
+ab==6458==
+==6458== HEAP SUMMARY:
+==6458==     in use at exit: 38,719 bytes in 415 blocks
+==6458==   total heap usage: 516 allocs, 101 frees, 45,698 bytes allocated
+==6458==
+==6458== LEAK SUMMARY:
+==6458==    definitely lost: 0 bytes in 0 blocks
+==6458==    indirectly lost: 0 bytes in 0 blocks
+==6458==      possibly lost: 0 bytes in 0 blocks
+==6458==    still reachable: 0 bytes in 0 blocks
+==6458==         suppressed: 38,719 bytes in 415 blocks
+==6458==
+==6458== For counts of detected and suppressed errors, rerun with: -v
+==6458== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+					</pre>
+					<div class="notes">
+						mit free
+					</div>
+				</section>
+				<section>
+					<pre>
+➜  c1 /usr/local/Cellar/valgrind/HEAD/bin/valgrind --tool=memcheck ./a.out
+#include<stdio.h>
+#include<stdlib.h>
+
+int main() {
+
+    char *str = (char *) malloc(sizeof(char) * 3);
+    str[0] = 'a';
+    str[1] = 'b';
+    str[2] = '\0';
+
+    printf("%s",str);
+
+    free(str);
+    free(str);
+
+    return 0;
+}
+					</pre>
+					<div class="notes">
+						mit free
+					</div>
+				</section>
+				<section>
+					<pre>
+/usr/local/Cellar/valgrind/HEAD/bin/valgrind --tool=memcheck ./a.out
+==6568== Memcheck, a memory error detector
+==6568== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==6568== Using Valgrind-3.12.0.SVN and LibVEX; rerun with -h for copyright info
+==6568== Command: ./a.out
+==6568==
+--6568-- run: /usr/bin/dsymutil "./a.out"
+warning: no debug symbols in executable (-arch x86_64)
+==6568== Invalid free() / delete / delete[] / realloc()
+==6568==    at 0x10000923F: free (in /usr/local/Cellar/valgrind/HEAD/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==6568==    by 0x100000F4C: main (in ./a.out)
+==6568==  Address 0x1008008f0 is 0 bytes inside a block of size 3 free'd
+==6568==    at 0x10000923F: free (in /usr/local/Cellar/valgrind/HEAD/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==6568==    by 0x100000F43: main (in ./a.out)
+==6568==  Block was alloc'd at
+==6568==    at 0x100008DFB: malloc (in /usr/local/Cellar/valgrind/HEAD/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==6568==    by 0x100000F0A: main (in ./a.out)
+==6568==
+ab==6568==
+==6568== HEAP SUMMARY:
+==6568==     in use at exit: 38,719 bytes in 415 blocks
+==6568==   total heap usage: 516 allocs, 102 frees, 45,698 bytes allocated
+==6568==
+==6568== LEAK SUMMARY:
+==6568==    definitely lost: 0 bytes in 0 blocks
+==6568==    indirectly lost: 0 bytes in 0 blocks
+==6568==      possibly lost: 0 bytes in 0 blocks
+==6568==    still reachable: 0 bytes in 0 blocks
+==6568==         suppressed: 38,719 bytes in 415 blocks
+==6568==
+==6568== For counts of detected and suppressed errors, rerun with: -v
+==6568== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+					</pre>
+					<div class="notes">
+						mit free
+					</div>
+				</section>
+
+				<section>
+					<h2>C / C++ / Rust haben kein GC.</h2>
+				</section>
+
+				<section>
+
+					<h2>Wie löst Rust das "Problem"?</h2>
+
+					<div class="editor">
+pub fn greet(name : String) {
+	println!("Hello {}", name);
+}
+
+pub fn main() {
+	let name = "PHPUG".to_string();
+
+	greet(name);
+}
+					</div>
+					<div class="notes">
+						- String zu Integer tauschen und zeigen, dass es geht.
+						- String zu slice tauschen, und Zeigen, dass es geht.
+					</div>
+				</section>
+				<section>
+
+					<h2>Borrowing</h2>
+
+					<div class="editor">
+pub fn greet(name : &String) {
+	println!("Hello {}", name);
+}
+
+pub fn main() {
+	let name = "PHPUG".to_string();
+
+	greet(&name);
+	greet(&name);
+}
+					</div>
+					<div class="notes">
+						- String zu Integer tauschen und zeigen, dass es geht.
+						- String zu slice tauschen, und Zeigen, dass es geht.
+					</div>
+				</section>
+
+				<section>
+					<h2>Installation</h2>
+					Rustup / (apt / compile your own / phpbrew)
+				</section>
+
+				<section>
+					<pre>
+$ phpbrew install 5.4.0 +default
+
+$ phpbrew use 5.4.22
+					</pre>
+				</section>
+
+				<section>
+					<pre>
+$ rustup [TODO]
+
+$ rustup [TODO]
+					</pre>
+				</section>
+
+				<section>
+					<h2>Package Management</h2>
+					cargo / composer
+				</section>
+
+				<section>
+					<h2>composer</h2>
+					<p>
+						composer.json / composer.lock
+					</p>
+					<img src="composer_json.png">
+				</section>
+
+				<section>
+					<h2>cargo</h2>
+					<p>
+						Cargo.toml / Cargo.lock
+					</p>
+					<img src="cargo.png">
+				</section>
+
+				<section>
+					<h2>cargo</h2>
+					<pre>
+$ cargo new --bin hellophpug
+
+$ cargo run
+					</pre>
+				</section>
+
+				<section>
+					<h2>IDE?</h2>
+					<img src="ide.png"/>
+				</section>
+
+				<section>
+					<h2>PHP "Basics"</h2>
+					include (multiple files), namespaces (visibility), easy development, composer (semver),
+				</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } }
+				//	{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+				//	{ src: 'plugin/zoom-js/zoom.js', async: true },
+				//	{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
