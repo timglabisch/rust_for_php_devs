@@ -1,0 +1,6 @@
+[package]
+name = "malloc"
+version = "0.1.0"
+authors = ["Tim Glabisch <tim.glabisch@sensiolabs.de>"]
+
+[dependencies]
