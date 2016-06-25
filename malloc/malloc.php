@@ -13,4 +13,3 @@ while(true) {
     $a = foo();
     sleep(0.5);
 }
-
