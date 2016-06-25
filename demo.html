@@ -39,9 +39,27 @@
 	<script type="application/javascript">
 		$(document).ready(function() {
 			$('.editor').each(function (i, v) {
+
+				$(v).css({
+					'height': $(document).height(),
+					'border': '3px silver',
+					'display': 'flex',
+					'justify-content': 'flex-start'
+				});
+
 				var code = encodeURIComponent($(v).html().trim());
 				$(v).html('');
-				$(v).append($('<iframe style="width:100%;height:600px"/>').attr('src', 'https://play.rust-lang.org/?code=' + code));
+
+				if (!$(v).data('php-example')) {
+					$(v).append($('<iframe style="flex: 1 1 auto"/>').attr('src', 'https://play.rust-lang.org/?code=' + code));
+					return;
+				}
+
+				$(v).append($('<iframe style="flex: 1 1 auto"/>').attr('src', 'https://play.rust-lang.org/?code=' + code));
+				$(v).append($('<iframe style="flex: 1 1 auto"/>').attr('src', $(v).data('php-example')));
+
+
+
 			});
 		});
 
@@ -53,7 +71,7 @@
 		<div class="reveal">
 
 			<!-- Any section element inside of this container is displayed as a slide -->
-			<div class="slides">
+			<code class="slides">
 
 				<section style="text-align: left;">
 
@@ -77,9 +95,9 @@
 
 				<section style="text-align: left;">
 
-					<div class="editor">
+					<div class="editor" data-php-example="https://3v4l.org/sGAuT">
 pub fn main() {
-	println!("{}", "Hello PHPUG!");
+	println!("Hello PHPUG!");
 }
 					</div>
 
@@ -99,7 +117,7 @@ pub fn main() {
 
 				<section>
 
-					<div class="editor">
+					<div class="editor" data-php-example="https://3v4l.org/B6C93">
 pub fn greet(name : String) {
 	println!("Hello {}", name);
 }
@@ -110,12 +128,23 @@ pub fn main() {
 	greet(name);
 }
 					</div>
+					<!--
+
+<?php
+
+function greet(string $name) {
+    echo sprintf("Hello %s", $name);
+}
+
+$name = "PHPUG";
+greet($name);
+-->
 
 				</section>
 
 				<section>
 
-					<div class="editor">
+					<div class="editor" data-php-example="https://3v4l.org/s9cMe">
 struct Person {
 	pub age: i32
 }
@@ -129,9 +158,22 @@ pub fn main() {
 
 				</section>
 
+<!--
+
+<?php
+class Person {
+    public $age = null;
+}
+
+$tim = new Person();
+$tim->age = 25;
+echo sprintf("Tim is %d years old", $tim->age);
+
+-->
+
 				<section>
 
-					<div class="editor">
+					<div class="editor" data-php-example="https://3v4l.org/X8SVu">
 struct Person {
 	age: i32
 }
@@ -150,6 +192,27 @@ pub fn main() {
 	println!("tim is {} years old", tim.age);
 }
 					</div>
+
+<!--
+
+<?php
+
+class Person {
+    public $age;
+
+    private function __construct(int $age) {
+        $this->age = $age;
+    }
+
+    public static function newWithAge(int $age) : Person {
+        return new static($age);
+    }
+}
+
+$tim = Person::newWithAge(25);
+echo sprintf("Tim is %d years old", $tim->age);
+
+-->
 
 				</section>
 
@@ -624,6 +687,154 @@ fn main() {
 					<pre>
 cargo run
 					</pre>
+				</section>
+
+				<section>
+					<div class="editor">
+struct Person {
+    age : i32
+}
+
+impl Person {
+
+    pub fn new(age : i32) -> Person {
+        Person {
+            age: age
+        }
+    }
+
+    pub fn get_age(&self) -> i32 {
+        self.age
+    }
+}
+
+fn main() {
+
+    let tim = Person::new(25);
+
+    println!("Tim is {} years old", tim.get_age());
+}
+					</div>
+				</section>
+
+				<section>
+					<div class="editor">
+fn main() {
+
+    let a;
+
+    if true {
+        a = "Ja";
+    } else {
+        a = "Nein";
+    }
+
+    println!("{}", a);
+}
+
+					</div>
+					<div class="notes">
+						etliche variationen (unitialisiert / if return value))
+					</div>
+				</section>
+
+				<section>
+					<div class="editor">
+fn main() {
+
+    let names = vec![
+        "Tim",
+        "Chris",
+        "Freerich"
+    ];
+
+    println!("{}", names.join(", "));
+}
+
+
+					</div>
+					<div class="notes">
+
+					</div>
+				</section>
+
+				<section>
+					<div class="editor">
+fn main() {
+
+    let mut names = vec![];
+    names.push("Tim");
+    names.push("Chris");
+    names.push("Freerich");
+
+    println!("{}", names.join(", "));
+}
+
+
+					</div>
+					<div class="notes">
+
+					</div>
+				</section>
+
+				<section>
+					<div class="editor">
+fn main() {
+
+    let mut names = Vec::new();
+    names.push("Tim");
+    names.push("Chris");
+    names.push("Freerich");
+
+    println!("{}", names.join(", "));
+}
+
+
+
+					</div>
+					<div class="notes">
+						Compiler Warnung bei:
+
+						fn main() {
+
+							let mut names = Vec::new();
+
+							println!("{}", names.join(", "));
+						}
+
+					</div>
+				</section>
+
+				<section>
+					<img src="never_use_null_qafoo.png"><br/>
+					<a href="https://qafoo.com/blog/083_never_use_null.html">qafoo.com/blog/083_never_use_null</a>
+				</section>
+
+				<section>
+
+						<code data-trim data-noescape class="editor">
+#[derive(Debug)]
+struct BlogPost;
+
+fn get_blog_post_by_uuid(uuid : &str) -> Option<BlogPost> {
+	if uuid == "1234-abcdef" {
+		return Some(BlogPost {});
+	}
+
+	None
+}
+
+fn main() {
+
+
+}
+
+
+
+					</code>
+					<div class="notes">
+
+					</div>
 				</section>
 
 			</div>
