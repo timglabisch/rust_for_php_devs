@@ -50,6 +50,8 @@
 				var code = encodeURIComponent($(v).html().trim());
 				$(v).html('');
 
+				return;
+
 				if (!$(v).data('php-example')) {
 					$(v).append($('<iframe style="flex: 1 1 auto"/>').attr('src', 'https://play.rust-lang.org/?code=' + code));
 					return;
@@ -71,7 +73,97 @@
 		<div class="reveal">
 
 			<!-- Any section element inside of this container is displayed as a slide -->
-			<code class="slides">
+			<div class="slides">
+
+				<section>
+					<img src="rust_more_control_more_safety.png"/>
+					<br/>
+					<a href="http://people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/2/1">people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/2/1</a><br/>
+					<a href="https://www.youtube.com/watch?v=agzf6ftEsLU">youtube.com/watch?v=agzf6ftEsLU</a>
+				</section>
+
+				<section>
+					Iterator example analog zur SPL: https://doc.rust-lang.org/src/core/up/src/libcore/iter.rs.html#109
+				</section>
+
+				<section>
+					Zero Cost Abstractions
+				</section>
+
+				<section>
+					Testing + Docs
+				</section>
+
+				<section>
+					Error Messages
+				</section>
+
+				<section>
+					No Implicit type conversion
+				</section>
+
+				<section>
+					Safe Abstractions
+				</section>
+
+				<section>
+					Zero cost abstractions
+					move semantics
+					quaranteed memory
+					threads without pain
+					oop
+					lovely syntax
+				</section>
+
+				<section>
+					Rust Startseite
+				</section>
+
+				<section>
+					can call C, can be called by C
+				</section>
+
+				<section>
+					Servo...
+				</section>
+
+				<section>
+					Borrowing hier erklären:
+					http://people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/4/1
+				</section>
+
+				<section>
+					Fearless concurrency
+				</section>
+
+				<section>
+					Why Rust slide http://pnkfelix.github.io/curry-on2015.html#/
+					Servo
+				</section>
+
+				<section>
+					error handling
+					Beispiel: https://doc.rust-lang.org/src/core/up/src/libcore/iter.rs.html#212
+				</section>
+
+				<section>
+					Module / Namespaces:
+					https://github.com/rust-lang/book/pull/117/files#diff-26454ae549e76c643db352be8bd74e08R216
+
+					Beispiel für Deptrac ...
+				</section>
+
+				<section>
+					what is rust good at:
+					http://people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/11/2
+				</section>
+
+				<section>
+					Self Containted (one huge exe)
+				</section>
+
+
+
 
 				<section style="text-align: left;">
 
@@ -81,15 +173,26 @@
 
 				<section>
 					<img src="oh_no.png"/>
+					<div class="speaker-notes">
+						Das interessante an rust ist, die Community.
+						Ich weiß nicht warum, aber aber irgendwie hat es die Rust Community und Mozilla geschafft,
+						ein paar Ruby Jungs für die Sprache zu begeistern.
+
+						Mozilla hat z.b. Steve einen ehemaligen Ruby entwickler eingestellt,
+						der den ganzen Tag nur Dokumentation zu Rust schreibt und das Tooling verbessert.
+
+						Im laufe der zeit wurden das noch mehr leute,
+						die nur an COmmunity, Tooling und etc. arbeiten.
+
+						Das ist einer der Gründe, warum sich Rust so wenig low Lewel anfühlt.
+					</div>
 				</section>
 
 				<section>
 					<img src="ich.jpeg"><br/>
 					<i>@timglabisch</i>
-				</section>
-
-				<section>
-					<img src="more_than_a_hype.jpg"/>
+					<br/>
+					<img src="github_stats.png"/>
 				</section>
 
 
@@ -221,6 +324,10 @@ echo sprintf("Tim is %d years old", $tim->age);
 				</section>
 
 				<section>
+					<img src="more_than_a_hype.jpg"/>
+				</section>
+
+				<section>
 					<img src="mozilla.png">
 
 					<div class="notes">
@@ -283,7 +390,7 @@ echo sprintf("Tim is %d years old", $tim->age);
 					</h1>
 					<div class="notes">
 						Performance
-						Kontroller
+						Kontrolle
 					</div>
 				</section>
 
@@ -341,32 +448,28 @@ echo sprintf("Tim is %d years old", $tim->age);
 
 
 				<section>
-					Was müsste eine Sprache bieten, um C / C++ hier zu ersetzen?
+					<img src="rust_more_control_more_safety.png"/>
+					<br/>
+					<a href="http://people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/2/1">people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/2/1</a><br/>
+					<a href="https://www.youtube.com/watch?v=agzf6ftEsLU">youtube.com/watch?v=agzf6ftEsLU</a>
+
+					<div class="speaker-notes">
+						- Was müsste eine Sprache bieten, um C / C++ hier zu ersetzen?
+						- C / C++ mit dem strengsten Compiler der Welt + dem ganzen Facy scheiss aus der Ruby Community
+					</div>
+
 				</section>
 
 				<section>
-					<h1>
-						Was bedeutet eigentlich kein GC?
-					</h1>
+					<h2>
+						Kein GC, Effizientes Speichermanagement.<br/>
+						Rust braucht kein free()
+					</h2>
 				</section>
 
 
 				<section>
-					<pre>
-						public function getText() {
-							return "Hallo Welt";     // Im Ram wird eine zval für den String angelegt. Counter steht auf 1.
-						}
-
-						public function doSomething() {
-							$text = getText();           // Im Ram wird eine zval für den String angelegt. Counter steht auf 1.
-							echo $text;                  // Text wird ausgegeben.
-						}
-
-						doSomething();
-
-						// GC Rennt und prüft ob die "Strings" noch "Aufrufbar" sind.
-
-					</pre>
+					<img src="php_gc.png"/>
 					<div class="notes">
 						Was für Probleme bringt das mit?
 					</div>
@@ -573,7 +676,6 @@ pub fn greet(name : &String) {
 	println!("Hello {}", name);
 }
 
-pub fn main() {
 	let name = "PHPUG".to_string();
 
 	greet(&name);
@@ -585,6 +687,60 @@ pub fn main() {
 						- String zu slice tauschen, und Zeigen, dass es geht.
 					</div>
 				</section>
+
+				<section>
+					<h1>Effizientes Memory Management.</h1>
+
+					<div class="speaker-notes">
+						Warum ist ZTS langsamer?
+					</div>
+				</section>
+
+				<section>
+					<div class="editor" data-php-example="https://3v4l.org/OdOXv">
+pub fn main() {
+	let a = "Foo";
+}
+					</div>
+				</section>
+
+				<section>
+					<div class="editor" data-php-example="https://3v4l.org/MMpFb">
+pub fn main() {
+	// Embeddet den UTF-8 String "Foo" in der Binary
+	// erstellt eine Referenz auf den "String-Slice" und erlaubt den Zugriff via a
+	let a = "Foo";
+}
+					</div>
+					<div class="speaker-notes">
+						let a = "Foo".to_string();
+						println!("{}", a);
+
+						den assembler code (release) von der menge zeigen.
+					</div>
+					<!--
+<?php
+
+// Frag den Ram nach Platz für ne Zval
+//
+// typedef union _zvalue_value {
+//    long lval;                 /* long value */
+//    double dval;               /* double value */
+//    struct {
+//        char *val;
+//        int len;               /* this will always be set for strings */
+//    } str;                     /* string (always has length) */
+//    HashTable *ht;             /* an array */
+//    zend_object_value obj;     /* stores an object store handle, and handlers */
+// } zvalue_value;
+//
+// registriere die variable im GC
+
+$a = "Foo";
+// und prüf hin und wieder und am ende, ob die variable noch gebraucht wird
+					-->
+				</section>
+
 
 				<section>
 					<h2>Installation</h2>
@@ -601,10 +757,25 @@ $ phpbrew use 5.4.22
 
 				<section>
 					<pre>
-$ rustup [TODO]
+$ curl https://sh.rustup.rs -sSf | sh
 
-$ rustup [TODO]
+$ rustup default nightly
+
 					</pre>
+					<div class="speaker-notes">
+						rustup update
+						rustup default
+
+						➜  rust_for_php_devs git:(master) ✗ rustup toolchain list
+						stable-x86_64-apple-darwin
+						nightly-2016-03-14-x86_64-apple-darwin
+						nightly-2016-03-27-x86_64-apple-darwin
+						nightly-2016-05-10-x86_64-apple-darwin
+						nightly-2016-05-20-x86_64-apple-darwin
+						nightly-2016-05-27-x86_64-apple-darwin
+
+						➜  rustup target list
+					</div>
 				</section>
 
 				<section>
@@ -644,7 +815,47 @@ $ cargo run
 
 				<section>
 					<h2>PHP "Basics"</h2>
-					include (multiple files), namespaces (visibility), easy development, composer (semver),
+					include, autoloader, namespaces, composer (semver),
+				</section>
+
+				<section>
+					<h3>Autoloader + Namespaces</h3>
+					<div class="editor" data-php-example="https://3v4l.org/pcmBV">
+mod foo;
+					</div>
+
+					<section class="speaker-notes">
+
+					</section>
+
+					<!--
+<?php
+
+if (file_exists($mod.'.rs') && file_exists($mod.'/mod.rs')) {
+    throw new \Exception('[file].rs and [file]/mod.rs exists.');
+} else if (file_exists($mod.'.rs')) {
+    include $mod.'.rs';
+} else if (file_exists($mod.'.rs')) {
+    include $mod.'/mod.rs';
+}
+					-->
+				</section>
+
+				<section>
+					<h3>Autoloader + Namespaces</h3>
+					<div class="editor" data-php-example="https://3v4l.org/pcmBV">
+						use foo::Bar;
+						use foo::{Bar, Bazz};
+						pub use foo::Bar;
+					</div>
+
+					<section class="speaker-notes">
+						use immer ab dem "Root",
+						pub use wird genutzt, um module anderen "crates" zur Verfügung zu stellen, sprich anderen Bibliotheken.
+						In php ist es so, dass alles immer zugriff auf alles hat.
+						Deptrac ist ein Tool was genau dieses fehlende Sprachfeature kompensiert.
+						in Java gibts auch public classes.
+					</section>
 				</section>
 
 				<section>
@@ -808,7 +1019,7 @@ fn main() {
 
 				<section>
 
-						<code data-trim data-noescape class="editor">
+						<div class="editor">
 #[derive(Debug)]
 struct BlogPost;
 
@@ -824,15 +1035,132 @@ fn main() {
 
 
 }
-
-
-
-					</code>
+					</div>
 					<div class="notes">
 
 					</div>
 				</section>
 
+
+				<section>
+
+					<div class="editor" data-php-example="https://3v4l.org/YXD9n">
+fn main() {
+	let numbers = vec![1, 2, 3, 4, 5, 6, 10, 100];
+
+	let result: Vec<_> = numbers.iter()
+	.filter(|&x| *x > 4)
+	.filter(|&x| *x < 100)
+	.map(|x| x * 2)
+	.chain(10..11)
+	.collect();
+
+	println!("{:#?}", result);
+}
+
+					</div>
+					<div class="notes">
+<!--
+
+<?php
+
+$numbers = [1, 2, 3, 4, 5, 6, 10, 100];
+
+$result =
+    array_values(array_map(
+        function($a) { return $a * 2; },
+        array_filter(
+            array_filter($numbers, function($a) { return $a > 4; }),
+            function($a) { return $a < 100; }
+        )
+    ));
+
+$result[] = 10;
+$result[] = 11;
+
+var_dump($numbers);
+
+-->
+					</div>
+				</section>
+
+				<section>
+					<h3>Generics</h3>
+					<div class="editor" data-php-example="https://3v4l.org/Sp3qc">
+enum May<T> {
+    Value(T),
+    Empty
+}
+
+impl<T> May<T> {
+    pub fn unwrap(&self) -> &T {
+        match self {
+            &May::Value(ref v) => v,
+            &May::Empty => panic!("yolo")
+        }
+    }
+}
+
+fn main() {
+    println!("{}", May::Value::<i32>(10).unwrap());
+    println!("{}", (May::Empty::<i32>).unwrap());
+}
+					</div>
+					<!--
+<?hh
+
+class Option<T> {
+
+    private T $value;
+
+    public function __construct(T $value) {
+        $this->value = $value;
+    }
+
+    public function unwrap() {
+        if ($this->value === null) { die('yolo'); }
+        return $this->value;
+    }
+}
+
+echo (new Option<String>("hello"))->unwrap();
+echo (new Option<String>(null))->unwrap();
+					-->
+				</section>
+
+				<section>
+					<h3>Lifetimes</h3>
+					<div class="editor">
+struct Person {
+	name : String
+}
+
+fn main() {
+
+	let name = "tim".to_string();
+
+	let tim = Person { name: name };
+	//let freerich = Person { name: name };
+
+}
+					</div>
+				</section>
+
+				<section>
+					<h3>Lifetimes</h3>
+					<div class="editor">
+struct Person<'a> {
+	name : &'a str
+}
+
+fn main() {
+	let name = "tim";
+
+	let tim = Person { name: &name };
+	// let freerich = Person { name: &name };
+}
+					</div>
+				</section>
 			</div>
 
 		</div>
