@@ -50,14 +50,16 @@
 				var code = encodeURIComponent($(v).html().trim());
 				$(v).html('');
 
-				return;
+				var rust_pen = "http://127.0.0.1:8080/";
+				//var rust_pen = "https://play.rust-lang.org/";
+
 
 				if (!$(v).data('php-example')) {
-					$(v).append($('<iframe style="flex: 1 1 auto"/>').attr('src', 'https://play.rust-lang.org/?code=' + code));
+					$(v).append($('<iframe style="flex: 1 1 auto"/>').attr('src', rust_pen + '/?code=' + code));
 					return;
 				}
 
-				$(v).append($('<iframe style="flex: 1 1 auto"/>').attr('src', 'https://play.rust-lang.org/?code=' + code));
+				$(v).append($('<iframe style="flex: 1 1 auto"/>').attr('src', rust_pen + '/?code=' + code));
 				$(v).append($('<iframe style="flex: 1 1 auto"/>').attr('src', $(v).data('php-example')));
 
 
@@ -70,18 +72,12 @@
 
 	<body>
 
-		<div class="reveal">
+		< class="reveal">
 
 			<!-- Any section element inside of this container is displayed as a slide -->
-			<div class="slides">
+			< class="slides">
 
-				<section>
-					<img src="rust_more_control_more_safety.png"/>
-					<br/>
-					<a href="http://people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/2/1">people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/2/1</a><br/>
-					<a href="https://www.youtube.com/watch?v=agzf6ftEsLU">youtube.com/watch?v=agzf6ftEsLU</a>
-				</section>
-
+				<!--
 				<section>
 					Iterator example analog zur SPL: https://doc.rust-lang.org/src/core/up/src/libcore/iter.rs.html#109
 				</section>
@@ -115,43 +111,12 @@
 					lovely syntax
 				</section>
 
-				<section>
-					Rust Startseite
-				</section>
-
-				<section>
-					can call C, can be called by C
-				</section>
-
-				<section>
-					Servo...
-				</section>
-
-				<section>
-					Borrowing hier erklären:
-					http://people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/4/1
-				</section>
-
-				<section>
-					Fearless concurrency
-				</section>
 
 				<section>
 					Why Rust slide http://pnkfelix.github.io/curry-on2015.html#/
 					Servo
 				</section>
 
-				<section>
-					error handling
-					Beispiel: https://doc.rust-lang.org/src/core/up/src/libcore/iter.rs.html#212
-				</section>
-
-				<section>
-					Module / Namespaces:
-					https://github.com/rust-lang/book/pull/117/files#diff-26454ae549e76c643db352be8bd74e08R216
-
-					Beispiel für Deptrac ...
-				</section>
 
 				<section>
 					what is rust good at:
@@ -162,7 +127,7 @@
 					Self Containted (one huge exe)
 				</section>
 
-
+				-->
 
 
 				<section style="text-align: left;">
@@ -173,19 +138,9 @@
 
 				<section>
 					<img src="oh_no.png"/>
-					<div class="speaker-notes">
-						Das interessante an rust ist, die Community.
-						Ich weiß nicht warum, aber aber irgendwie hat es die Rust Community und Mozilla geschafft,
-						ein paar Ruby Jungs für die Sprache zu begeistern.
+					<aside class="notes">
 
-						Mozilla hat z.b. Steve einen ehemaligen Ruby entwickler eingestellt,
-						der den ganzen Tag nur Dokumentation zu Rust schreibt und das Tooling verbessert.
-
-						Im laufe der zeit wurden das noch mehr leute,
-						die nur an COmmunity, Tooling und etc. arbeiten.
-
-						Das ist einer der Gründe, warum sich Rust so wenig low Lewel anfühlt.
-					</div>
+					</aside>>
 				</section>
 
 				<section>
@@ -321,11 +276,45 @@ echo sprintf("Tim is %d years old", $tim->age);
 
 				<section>
 					<h3>Warum Rust?</h3>
+
+					<aside class="notes">
+						Die Frage die sich ja stellt ist, warum noch eine Sprache?
+						Heute stell ich rust vor, gestern CoffeeScript, und morgen?
+
+						Die Beispiele die wir eben gesehen haben, hauen ein ja nicht um.
+					</aside>
 				</section>
 
 				<section>
 					<img src="more_than_a_hype.jpg"/>
+					<aside class="notes">
+						In den nächsten paar Minuten möchte ich euch Zeigen, warum Rust besonders ist, eine ganz eigene Rolle winnimmt und
+						wenig vergleichbar mit anderen Sprachen ist, die euch in den letzten Jahren vorgestellt wurden.
+
+						Wir werden hierfür ein wenig in der Historie von Rust rumgraben müssen.
+					</aside>
 				</section>
+
+				<section>
+					<img src="rust_lang_org_startpage1.png">
+					<aside class="notes">
+						rust ist also angeblich eine system programmiersprache,
+						welche schnell läuft, sicherheit garantiert und segfaults vermeidet.
+						hört sich erstmal nicht so besonders an, oder? wir werden im laufe des talks auf die
+						eigenschaften blicken -> aber nun erstmal was code...
+					</aside>>
+				</section>
+
+				<section>
+					<img src="rust_lang_org_startpage2.png">
+					<aside class="notes">
+						rust ist also angeblich eine system programmiersprache,
+						welche schnell läuft, sicherheit garantiert und segfaults vermeidet.
+						hört sich erstmal nicht so besonders an, oder? wir werden im laufe des talks auf die
+						eigenschaften blicken -> aber nun erstmal was code...
+					</aside>
+				</section>
+
 
 				<section>
 					<img src="mozilla.png">
@@ -333,23 +322,57 @@ echo sprintf("Tim is %d years old", $tim->age);
 					<div class="notes">
 						Stell dir vor, du bist Mozilla.
 						Welche Sprache würdest du verwenden um den Next Gen. Firefox zu bauen?
+
+						Es gibt (für mich) ein paar Sprachgattungen.
 					</div>
 				</section>
 
 				<section>
 					<img src="img_lang_types/interpreter.png">
+
+					<aside class="notes">
+						PHP ist eine Interpreter Sprache.
+						Warum eigenet sich eine Sprache wie PHP (oder z.b. Python) nicht so gut, um einen Browser zu entwickeln?
+						Android?
+
+						- viel zu langsam
+					</aside>
 				</section>
 
 				<section>
 					<img src="img_lang_types/jit.png">
+
+					<aside class="notes">
+						Warum eignet sich z.b. Java nicht um z.b. einen Browser zu implementieren?
+
+						- Langsam
+						- Oft kostspielige Runtime -> Ramverbrauch ist eklig...
+						- Native schnittstellen sind nicht wirklich nutzbar -> OS ist in anderer Sprache geschrieben.
+					</aside>
 				</section>
 
 				<section>
 					<img src="img_lang_types/native_runtime.png">
+
+					<aside class="notes">
+						Eine recht frisch aufstrebene Gattung von Sprache:
+
+						Nativer Code welcher eine eigene Runtime mitbringt.
+						Gründe werden weniger, fällt wem noch was ein?
+
+						- GC ist ein problem, stellt euch ein videoplayback vor, was hin und wieder mal stoppt weil der gc läuft (bei Java teilweise minuten (TB Ram))
+						- Durch den GC kann man nicht wirklich sinnvoll C callen, bzw von C gecalled werden.
+						- Treiber oder PHP Extensions lassen sich aus diesem grund nicht wirklich sinnvoll mit solchen sprachen schreiben.
+					</aside>
 				</section>
 
 				<section>
 					<img src="img_lang_types/native_without_rust.png">
+					<div class="notes">
+						- In diesen Sprachen geht das, aber warum macht's kein spass?
+
+						-> und dennoch
+					</div>
 				</section>
 
 				<section>
@@ -363,7 +386,7 @@ echo sprintf("Tim is %d years old", $tim->age);
 						geschrieben
 					</h2>
 
-					<div class="notes">
+					<aside class="notes">
 						Warum ist das eigentlich so?
 						Mozilla beispielsweise hat das Problem, dass es Firefox maintaint.
 						Firefox ist ein gewaltiges C++ Projekt.
@@ -372,59 +395,41 @@ echo sprintf("Tim is %d years old", $tim->age);
 						Warum aber muss Mozilla C++ oder C für den Firefox verwenden?
 
 						vergleichen wir doch mal unterschiedliche Sprachen...
-					</div>
+					</aside>
 				</section>
 
 
 				<section>
-					<img style="width:70%" src="written_in_c.png"/>
-					<div class="notes">
-						Vor dem Problem steht nicht nur Mozilla.
-						Fast jede wirklich wichtige Basistechnologie ist in C / C++ geschrieben
-					</div>
-				</section>
+					<img src="rust_more_control_more_safety.png"/>
+					<br/>
+					<a href="http://people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/2/1">people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/2/1</a><br/>
+					<a href="https://www.youtube.com/watch?v=agzf6ftEsLU">youtube.com/watch?v=agzf6ftEsLU</a>
 
-				<section>
-					<h1>
-						Warum?
-					</h1>
-					<div class="notes">
-						Performance
-						Kontrolle
-					</div>
-				</section>
-
-
-				<section>
-					<img src="img_lang_types/native.png">
-				</section>
-
-				<section>
-					<h1>
-						Warum macht C / C++ keinen Spass?
-					</h1>
-					<h2>
-						Können wir das heute nicht besser?
-					</h2>
+					<aside class="notes">
+						- Rust setzt genau hier ein, und versucht sich in diese Sprachfamilie zu finden.
+						- warum aber, findet so wenig bewegung in dieser Sprachgruppe statt?
+						- Rust zu entwickeln war sehr hart -> Mozilla hat hierfür 9 Jahre Researcharbeit investiert.
+						- Wofür aber hat Mozilla diese gebraucht? Vergleichen wir das ganze mal mit der restlichen Sprachfamilie.
+					</aside>
 				</section>
 
 				<section>
 					<h2>
-						Warum macht C / C++ keinen Spass? (Fehlerhandling)
+						C++ Fehlerhandling
 					</h2>
 					<img src="cpp_error_messages.png"/>
 				</section>
 
 				<section>
 					<h2>
-						Warum macht C / C++ keinen Spass? (Fehlerhandling)
+						C++ Fehlerhandling
 					</h2>
 					<img src="cpp_error_messages2.png"/>
 				</section>
 
 				<section>
 					<h1>
-						Kein sinnvoller IDE Support.
+						Kein "PHPStorm".
 					</h1>
 				</section>
 
@@ -453,10 +458,12 @@ echo sprintf("Tim is %d years old", $tim->age);
 					<a href="http://people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/2/1">people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/2/1</a><br/>
 					<a href="https://www.youtube.com/watch?v=agzf6ftEsLU">youtube.com/watch?v=agzf6ftEsLU</a>
 
-					<div class="speaker-notes">
-						- Was müsste eine Sprache bieten, um C / C++ hier zu ersetzen?
+					<aside class="notes">
+						- Rust löst alle diese dinge ...
+						- wenn man sich vor augen führt, dass alles wichtige, in so einer "matschigen" Sprache geschrieben ist,
+						dann kann Rust eine echte Rettung sein.
 						- C / C++ mit dem strengsten Compiler der Welt + dem ganzen Facy scheiss aus der Ruby Community
-					</div>
+					</aside>
 
 				</section>
 
@@ -492,9 +499,9 @@ int main() {
 	return 0;
 }
 					</pre>
-					<div class="notes">
+					<aside class="notes">
 						gcc -c main.c
-					</div>
+					</aside>
 				</section>
 
 				<section>
@@ -521,9 +528,9 @@ ab==6343==
 ==6343== For counts of detected and suppressed errors, rerun with: -v
 ==6343== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 					</pre>
-					<div class="notes">
+					<aside class="notes">
 						gcc -c main.c
-					</div>
+					</aside>
 				</section>
 				<section>
 					<pre>
@@ -545,9 +552,9 @@ int main() {
     return 0;
 }
 					</pre>
-					<div class="notes">
+					<aside class="notes">
 						mit free
-					</div>
+					</aside>
 				</section>
 				<section>
 					<pre>
@@ -574,9 +581,9 @@ ab==6458==
 ==6458== For counts of detected and suppressed errors, rerun with: -v
 ==6458== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 					</pre>
-					<div class="notes">
+					<aside class="notes">
 						mit free
-					</div>
+					</aside>
 				</section>
 				<section>
 					<pre>
@@ -599,9 +606,9 @@ int main() {
     return 0;
 }
 					</pre>
-					<div class="notes">
+					<aside class="notes">
 						mit free
-					</div>
+					</aside>
 				</section>
 				<section>
 					<pre>
@@ -638,13 +645,16 @@ ab==6568==
 ==6568== For counts of detected and suppressed errors, rerun with: -v
 ==6568== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
 					</pre>
-					<div class="notes">
+					<aside class="notes">
 						mit free
-					</div>
+					</aside>
 				</section>
 
 				<section>
-					<h2>C / C++ / Rust haben kein GC.</h2>
+					<img src="ownership_in_c.png.png"/>
+					<br/>
+					<a href="http://people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/4/1">people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/4/1</a>
+
 				</section>
 
 				<section>
@@ -662,10 +672,10 @@ pub fn main() {
 	greet(name);
 }
 					</div>
-					<div class="notes">
+					<aside class="notes">
 						- String zu Integer tauschen und zeigen, dass es geht.
 						- String zu slice tauschen, und Zeigen, dass es geht.
-					</div>
+					</aside>
 				</section>
 				<section>
 
@@ -676,24 +686,100 @@ pub fn greet(name : &String) {
 	println!("Hello {}", name);
 }
 
+pub fn main() {
 	let name = "PHPUG".to_string();
 
 	greet(&name);
 	greet(&name);
 }
 					</div>
-					<div class="notes">
+					<aside class="notes">
 						- String zu Integer tauschen und zeigen, dass es geht.
 						- String zu slice tauschen, und Zeigen, dass es geht.
+					</aside>
+				</section>
+
+				<section>
+					<h3>"ownership" löst das free() Problem.</h3>
+				</section>
+
+				<section>
+					<div class="editor">
+use std::thread;
+use std::time::Duration;
+
+fn main() {
+    let mut data = vec![1, 2, 3];
+
+    for i in 0..3 {
+        thread::spawn(move || {
+            data[i] += 1;
+        });
+    }
+
+    thread::sleep(Duration::from_millis(50));
+}
+						</div>
+				</section>
+
+				<section>
+					<div class="editor">
+use std::thread;
+use std::time::Duration;
+
+fn main() {
+    let data = vec![1, 2, 3];
+
+    for i in 0..3 {
+
+        let mut x = data[i].clone();
+
+        thread::spawn(move || {
+            x += 1;
+        });
+    }
+
+    thread::sleep(Duration::from_millis(50));
+}
+						</div>
+				</section>
+
+				<section>
+					<div class="editor">
+use std::sync::{Arc, Mutex};
+use std::thread;
+use std::time::Duration;
+
+fn main() {
+    let data = Arc::new(Mutex::new(vec![1, 2, 3]));
+
+    for i in 0..3 {
+        let data = data.clone();
+        thread::spawn(move || {
+            let mut data = data.lock().unwrap();
+            data[i] += 1;
+        });
+    }
+
+    thread::sleep(Duration::from_millis(50));
+}
 					</div>
+				</section>
+
+				<section>
+					<h1>Rusts Ownership bedeutet sichere parallele Programmierung.</h1>
+					<aside class="notes">
+						absolutes alleinstellungsmerkmal.
+						es gibt nette libs, die regeln sind auch bei denen "erzwungen"
+					</aside>
 				</section>
 
 				<section>
 					<h1>Effizientes Memory Management.</h1>
 
-					<div class="speaker-notes">
-						Warum ist ZTS langsamer?
-					</div>
+					<aside class="notes">
+						Warum ist ZTS langsamer? - Refcounter für die ZVals ist komplexer
+					</aside>
 				</section>
 
 				<section>
@@ -712,12 +798,12 @@ pub fn main() {
 	let a = "Foo";
 }
 					</div>
-					<div class="speaker-notes">
+					<aside class="notes">
 						let a = "Foo".to_string();
 						println!("{}", a);
 
 						den assembler code (release) von der menge zeigen.
-					</div>
+					</aside>
 					<!--
 <?php
 
@@ -762,7 +848,7 @@ $ curl https://sh.rustup.rs -sSf | sh
 $ rustup default nightly
 
 					</pre>
-					<div class="speaker-notes">
+					<aside class="notes">
 						rustup update
 						rustup default
 
@@ -775,7 +861,7 @@ $ rustup default nightly
 						nightly-2016-05-27-x86_64-apple-darwin
 
 						➜  rustup target list
-					</div>
+					</aside>
 				</section>
 
 				<section>
@@ -824,9 +910,6 @@ $ cargo run
 mod foo;
 					</div>
 
-					<section class="speaker-notes">
-
-					</section>
 
 					<!--
 <?php
@@ -849,13 +932,13 @@ if (file_exists($mod.'.rs') && file_exists($mod.'/mod.rs')) {
 						pub use foo::Bar;
 					</div>
 
-					<section class="speaker-notes">
+					<aside class="notes">
 						use immer ab dem "Root",
 						pub use wird genutzt, um module anderen "crates" zur Verfügung zu stellen, sprich anderen Bibliotheken.
 						In php ist es so, dass alles immer zugriff auf alles hat.
 						Deptrac ist ein Tool was genau dieses fehlende Sprachfeature kompensiert.
 						in Java gibts auch public classes.
-					</section>
+					</aside>
 				</section>
 
 				<section>
@@ -894,6 +977,10 @@ fn main() {
 					<pre>
 cargo run
 					</pre>
+				</section>
+
+				<section>
+					<h3>Ein wenig mehr OOP:</h3>
 				</section>
 
 				<section>
@@ -940,9 +1027,10 @@ fn main() {
 }
 
 					</div>
-					<div class="notes">
+					<aside class="notes">
 						etliche variationen (unitialisiert / if return value))
-					</div>
+						Rust -> safe
+					</aside>
 				</section>
 
 				<section>
@@ -960,9 +1048,9 @@ fn main() {
 
 
 					</div>
-					<div class="notes">
+					<aside class="notes">
 
-					</div>
+					</aside>
 				</section>
 
 				<section>
@@ -979,9 +1067,9 @@ fn main() {
 
 
 					</div>
-					<div class="notes">
+					<aside class="notes">
 
-					</div>
+					</aside>
 				</section>
 
 				<section>
@@ -1036,9 +1124,9 @@ fn main() {
 
 }
 					</div>
-					<div class="notes">
+					<aside class="notes">
 
-					</div>
+					</aside>
 				</section>
 
 
@@ -1059,7 +1147,7 @@ fn main() {
 }
 
 					</div>
-					<div class="notes">
+					<aside class="notes">
 <!--
 
 <?php
@@ -1081,7 +1169,7 @@ $result[] = 11;
 var_dump($numbers);
 
 -->
-					</div>
+					</aside>
 				</section>
 
 				<section>
@@ -1129,6 +1217,60 @@ echo (new Option<String>(null))->unwrap();
 				</section>
 
 				<section>
+					<h3>Community</h3>
+				</section>
+
+				<section>
+					<img src="community/rust_community_team.png"/>
+				</section>
+				<section>
+					<img src="community/crates_index.png"/>
+				</section>
+				<section>
+					<img src="community/rust_book.png"/>
+				</section>
+				<section>
+					<img src="community/rust_playbot.png"/>
+				</section>
+				<section>
+					<img src="community/rust_most_loved.png"/>
+				</section>
+				<section>
+					<img src="community/rust_n64.png"/>
+				</section>
+				<section>
+					<img src="community/write_os_in_rust.png"/>
+				</section>
+				<section>
+					<img src="community/rust_rfcs.png"/>
+				</section>
+				<section>
+					<img src="community/rust_by_example.png"/>
+				</section>
+
+				<section>
+					<h3>Projects</h3>
+				</section>
+				<section>
+					<img src="projects/bindings.png"/>
+				</section>
+				<section>
+					<img src="projects/diesel_faster_than_c.png"/>
+				</section>
+				<section>
+					<img src="projects/redox.png"/>
+				</section>
+				<section>
+					<img src="projects/rust_helix.png"/>
+				</section>
+				<section>
+					<img src="projects/rust_php_extension.png"/>
+				</section>
+				<section>
+					<img src="projects/rust_vulkan.png"/>
+				</section>
+
+				<section>
 					<h3>Lifetimes</h3>
 					<div class="editor">
 struct Person {
@@ -1161,6 +1303,8 @@ fn main() {
 }
 					</div>
 				</section>
+
+
 			</div>
 
 		</div>
