@@ -47,23 +47,46 @@
 					'justify-content': 'flex-start'
 				});
 
-				var code = encodeURIComponent($(v).html().trim());
-				$(v).html('');
-
 				var rust_pen = "http://127.0.0.1:8080/";
 				//var rust_pen = "https://play.rust-lang.org/";
 
+				var rust_code = encodeURIComponent($(v).html().trim().replace(/\&gt\;/g, '>').replace(/\&lt\;/g, '<').replace(/\&amp\;/g, '&'));
 
-				if (!$(v).data('php-example')) {
-					$(v).append($('<iframe style="flex: 1 1 auto"/>').attr('src', rust_pen + '/?code=' + code));
+				if (!$(v).parent().find('.php_example').html()) {
+					$(v).html('');
+					$(v).append($('<iframe style="flex: 1 1 auto"/>').attr('src', rust_pen + '/?code=' + rust_code));
 					return;
 				}
 
-				$(v).append($('<iframe style="flex: 1 1 auto"/>').attr('src', rust_pen + '/?code=' + code));
-				$(v).append($('<iframe style="flex: 1 1 auto"/>').attr('src', $(v).data('php-example')));
+				var php_code = $(v).parent().find('.php_example').html().trim().replace(/\&gt\;/g, '>').replace(/\&lt\;/g, '<').replace(/\&amp\;/g, '&');
+				var php_example_url = $(v).parent().find('.php_example').data('php-example');
 
 
+				$(v).html('');
+				$(v).parent().find('.php_example').remove();
 
+				$(v).append($('<iframe style="flex: 1 1 auto;overflow:scroll"/>').attr('src', rust_pen + '/?code=' + rust_code));
+
+				var php_code_node = $('<div><pre><code data-trim data-noescape>' + php_code + '</code></pre><center><small><i>(clickable)</i></small></center></div>');
+
+				$(v).append($('<div style="flex: 1 1 auto;overflow:scroll"/>').html(php_code_node));
+
+				if (php_example_url) {
+					php_code_node.on('click', function() {
+						php_code_node.parent().remove(); //.html($('<iframe style="flex: 1 1 auto"/>').attr('src', php_example_url));
+						$(v).append($('<iframe style="flex: 1 1 auto;overflow:scroll"/>').attr('src', php_example_url));
+					});
+
+				}
+			});
+
+			$('.editor > *').mouseenter(function(e) {
+				$(e.target).css('flex', '95 1 auto');
+				$(e.target).siblings().css('width', '100');
+			})
+			.mouseleave(function(e) {
+				$(e.target).css('flex', '1 1 auto');
+				$(e.target).siblings().css('width', null);
 			});
 		});
 
@@ -72,10 +95,10 @@
 
 	<body>
 
-		< class="reveal">
+		<div class="reveal">
 
 			<!-- Any section element inside of this container is displayed as a slide -->
-			< class="slides">
+			<div class="slides">
 
 				<!--
 				<section>
@@ -130,35 +153,140 @@
 				-->
 
 
+
+				<!--
+				<section style="text-align: left;">
+
+					<pre><code data-trim data-noescape>
+					(def lazy-fib
+					  (concat
+					   [0 1]
+					   <mark>((fn rfib [a b]</mark>
+							(lazy-cons (+ a b) (rfib b (+ a b)))) 0 1)))
+						</code></pre>
+
+				</section>
+				-->
+
+
 				<section style="text-align: left;">
 
 					<h1>Rust for PHP devs</h1>
+
+					<aside class="notes">
+						<ul>
+							<li>Ja, Hallo und herzlich willkommen.</li>
+							<li>Wir werden uns heute mit dem Thema Rust für PHP Dev's beschäftigen</li>
+							<li>Wer von euch hat sich denn hier eingeschlichen und ist garkein PHP Dev?</li>
+							<li>Wer von euch hat denn schon mal von Rust gehört?</li>
+
+							<li>Ich hatte den Talk ja irgendwann vorletzte Woche angekündigt und darauf folgte prompt diese Reaktion -></li>
+						</ul>
+					</aside>
 
 				</section>
 
 				<section>
 					<img src="oh_no.png"/>
 					<aside class="notes">
-
+						<ul>
+							<li>War natürlich Spass, aber irgendwo steckt immer ein stück "Warheit"</li>
+							<li>
+								hat jemand von euch schon mal
+								<ul>
+									<li>von diesem "system code" gehört?</li>
+									<li>und warum sollte man uns nicht erlauben diesen zu schreiben?</li>
+									<li>
+										Wir werden und in diesem Talk damit beschäftigen
+										<ul>
+											<li>Warum Rust die Chance für euch ist "system code" zu schreiben.</li>
+											<li>ohne die schmerzen von C/C++</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
 					</aside>>
 				</section>
 
 				<section>
-					<img src="ich.jpeg"><br/>
+					<img src="ich.jpeg" style="max-width:200px"><br/>
 					<i>@timglabisch</i>
 					<br/>
-					<img src="github_stats.png"/>
+					<img src="github_stats.png" style="max-width:370px"/>
+					<aside class="notes">
+						<ul>
+							<li>Ich bin Tim</li>
+							<li>Wer mich schon mal im Internet gesehen hat, vermutlich mit diesem Bild</li>
+							<li>
+								Ich Maintaine Deptrac primär
+								<ul>
+									<li>Wenn Deptrac doof ist, und rust doof ist, dann hab ich euch wohl den abend versaut x)</li>
+								</ul>
+							</li>
+							<li>
+								... Und Github denkt ich würde in diesen Sprachen entwickeln
+								<ul>
+									<li>Das ist definitiv falsch, ich mach kein Basic x)</li>
+									<li>gibt aber vielleicht ein ganz guten Überblick über meinen "sprachlichen" Background</li>
+								</ul>
+							</li>
+							<li>
+								Ich arbeite hier für Sensiolabs
+								<ul>
+									<li>
+										Und wie jede andere Firma, suchen wir natürlich auch nach neuen tollen mitarbeitern,
+										wer also interesse hat, gerne einfach mich, andreas und freerich ansprechen.
+									</li>
+								</ul>
+							</li>
+
+							<li>
+								Der Titel des Talks war ja Rust für PHP Devs
+								<ul>
+									<li>In diesem Sinne hab ich heute viel Code mitgebracht</li>
+									<li>Ich hab aber auch viele Slides mitgebracht</li>
+									<li>Sollte ich euch deutlich zu schnell werden, einfach aufschreien oder mit irgendwas nach mir werfen.</li>
+								</ul>
+							</li>
+						</ul>
+					</aside>
 				</section>
 
 
 				<section style="text-align: left;">
 
-					<div class="editor" data-php-example="https://3v4l.org/sGAuT">
+					<div class="editor">
 pub fn main() {
 	println!("Hello PHPUG!");
 }
 					</div>
 
+					<div class="php_example" data-php-example="https://3v4l.org/sGAuT">
+echo sprintf("%s", "Hello PHPUG!");
+					</div>
+
+					<aside class="notes">
+						<ul>
+							<li>Wie versprochen der erste Code.</li>
+							<li>Ich hab in den Slides oft diesen Editor eingebunden</li>
+							<li>Oft mit php Beispiel auf der rechten Seite</li>
+							<li>Links in dem weißen Fenster ist immer der Rust Code</li>
+							<li>Rechts der PHP Code</li>
+							<li>den Rust Code links kann man verändern und auf Run klicken</li>
+							<li>den php code, immer wenn da (clickable) steht drauf klicken und online ausführen</li>
+							<li>je nachdem wo die maus grade ist, verändert sich die fenstergröße</li>
+							<li>
+								wir können mit dem ein oder anderen Beispiel ein wenig rumspielen, hab aber wiegesagt einige slides mitgebracht und zeitfenster ...
+							</li>
+							<li>
+								hier haben wir als erstes einmal ein kleines Hallo Welt Beispiel
+							</li>
+							<li>
+								Fragen bier hier her?
+							</li>
+						</ul>
+					</aside>
 				</section>
 
 				<section>
@@ -171,11 +299,19 @@ pub fn main() {
 }
 					</div>
 
+					<aside class="notes">
+						<ul>
+							<li>Variablen werden immer mit einem "let" wie in JS deklariert.</li>
+							<li>Rust findet den Typen dann selbst raus und nutzt den (Rust ist stark typisiert)</li>
+							<li>Typen brauch man in Rust nur selten zu schreiben, idr nur in Funktionssignaturen</li>
+						</ul>
+					</aside>
+
 				</section>
 
 				<section>
 
-					<div class="editor" data-php-example="https://3v4l.org/B6C93">
+					<div class="editor">
 pub fn greet(name : String) {
 	println!("Hello {}", name);
 }
@@ -186,23 +322,34 @@ pub fn main() {
 	greet(name);
 }
 					</div>
-					<!--
-
-<?php
+					<div class="php_example" data-php-example="https://3v4l.org/B6C93">
 
 function greet(string $name) {
-    echo sprintf("Hello %s", $name);
+    echo sprintf(
+		"Hello %s",
+		$name
+	);
 }
 
 $name = "PHPUG";
 greet($name);
--->
+					</div>
+
+					<aside class="notes">
+						<ul>
+							<li>Hier sehen wir eine Funktion welche aufgerufen wird (greet)</li>
+							<li>Typisierung der Funktion (String) ist steht auf der rechten seite (ungewohnt)</li>
+							<li>sieht php recht ähnlich ...</li>
+							<li>ich werde für den Moment noch nicht auf das .to_string() eingehen, vielleicht schaffen wir das gleich noch</li>
+						</ul>
+					</aside>
+
 
 				</section>
 
 				<section>
 
-					<div class="editor" data-php-example="https://3v4l.org/s9cMe">
+					<div class="editor">
 struct Person {
 	pub age: i32
 }
@@ -213,25 +360,37 @@ pub fn main() {
 	println!("tim is {} years old", tim.age);
 }
 					</div>
+					<div class="php_example" data-php-example="https://3v4l.org/s9cMe">
 
-				</section>
-
-<!--
-
-<?php
 class Person {
     public $age = null;
 }
 
 $tim = new Person();
 $tim->age = 25;
-echo sprintf("Tim is %d years old", $tim->age);
+echo sprintf(
+	"Tim is %d years old",
+	$tim->age
+);
 
--->
+					</div>
+
+					<aside class="notes">
+						<ul>
+							<li>Rust kennt keine Klassen (OOP) ist aber möglich.</li>
+							<li>Rust nutzt hier einfach sogenannte "structs" wo methoden dran gehangen werden können.</li>
+							<li>Das hat z.b. den Vorteil, dass diese Structs kompatibel mit Structs in C sein können.</li>
+							<li>In PHP würde man dies wohl mit einer einer Klasse realisiert werden</li>
+							<li>auch wenn der code ähnlich ausschaut, was unter der haube passiert ist was völlig anderes</li>
+						</ul>
+					</aside>
+
+				</section>
+
 
 				<section>
 
-					<div class="editor" data-php-example="https://3v4l.org/X8SVu">
+					<div class="editor">
 struct Person {
 	age: i32
 }
@@ -250,10 +409,7 @@ pub fn main() {
 	println!("tim is {} years old", tim.age);
 }
 					</div>
-
-<!--
-
-<?php
+					<div class="php_example" data-php-example="https://3v4l.org/X8SVu">
 
 class Person {
     public $age;
@@ -270,48 +426,106 @@ class Person {
 $tim = Person::newWithAge(25);
 echo sprintf("Tim is %d years old", $tim->age);
 
--->
+					</div>
 
+					<aside class="notes">
+						<ul>
+							<li>Hier haben wir auf der rechten seite eine Typische Klasse in PHP (mit einem named Constructor)</li>
+							<li>Der Konstruktor (statische Funktion) erlaubt das erstellen einer Person mit einem Alter</li>
+							<li>Der Rückgabewert des Construktors ist eine Person (php7)</li>
+							<li>im anschluss lässt sich eine Person erstellen, mit einem alter, und das alter ausgeben</li>
+							<li>...recht klassisches php...</li>
+							<li>
+								Schauen wir uns den Rust Code an
+								<ul>
+									<li>wir definieren ein struct (unserer properties in php)</li>
+									<li>Rust kennt nur "named constructors (new ist lediglich eine Namenskonvention)</li>
+									<li>In Rust wird immer die letzte Expression zurückgegeben, man spart sich also das "return"</li>
+									<li>Im Anschluss kein über ::new Instanz erstellt werden</li>
+									<li>Diese kann dann wie gewohnt verwendet werden</li>
+								</ul>
+							</li>
+						</ul>
+					</aside>
 				</section>
 
 				<section>
 					<h3>Warum Rust?</h3>
 
 					<aside class="notes">
-						Die Frage die sich ja stellt ist, warum noch eine Sprache?
-						Heute stell ich rust vor, gestern CoffeeScript, und morgen?
-
-						Die Beispiele die wir eben gesehen haben, hauen ein ja nicht um.
+						<ul>
+							<li>warum noch eine Sprache?</li>
+							<li>Heute stell ich rust vor, gestern CoffeeScript, und morgen?</li>
+							<li>
+								Die Beispiele die wir eben gesehen haben, hauen einen ja nicht sonderlich um
+								<ul>
+									<li>Ist einer von euch schon so richtig beeindruckt?</li>
+								</ul>
+							</li>
+						</ul>
 					</aside>
 				</section>
 
 				<section>
 					<img src="more_than_a_hype.jpg"/>
 					<aside class="notes">
-						In den nächsten paar Minuten möchte ich euch Zeigen, warum Rust besonders ist, eine ganz eigene Rolle winnimmt und
-						wenig vergleichbar mit anderen Sprachen ist, die euch in den letzten Jahren vorgestellt wurden.
 
-						Wir werden hierfür ein wenig in der Historie von Rust rumgraben müssen.
+						<ul>
+							<li>Ich bin recht viel unterwegs und sehe recht viele technologien</li>
+							<li>Grade wenn ich architekturlastige arbeiten mit Teams mache, fühle ich mich oft öhnlich wie auf dem Bild</li>
+							<li>Hypes werden ausprobiert, es entwickeln sich technologien draus</li>
+							<li>Ich würd euch gerne in den nächsten Minuten erzählen warum das auf Rust nicht zutrifft, sprich, warum Rust kein Hype ist.</li>
+							<li>Dafür müssen wir ein wenig in der Historie rumgraben</li>
+							<li>Aber lasst uns erstmal auf der Startseite anfangen</li>
+						</ul>
 					</aside>
 				</section>
 
 				<section>
 					<img src="rust_lang_org_startpage1.png">
 					<aside class="notes">
-						rust ist also angeblich eine system programmiersprache,
-						welche schnell läuft, sicherheit garantiert und segfaults vermeidet.
-						hört sich erstmal nicht so besonders an, oder? wir werden im laufe des talks auf die
-						eigenschaften blicken -> aber nun erstmal was code...
+						<ul>
+							<li>Da schon wieder der Begriff system programming</li>
+							<li>ist das php auch? wohl eher web programming, mhhmm</li>
+							<li>und rust will "blazingly fast" sein</li>
+							<li>ok, nichts neues, das sind C und C++ z.b. auch</li>
+						</ul>
 					</aside>>
 				</section>
 
 				<section>
 					<img src="rust_lang_org_startpage2.png">
 					<aside class="notes">
-						rust ist also angeblich eine system programmiersprache,
-						welche schnell läuft, sicherheit garantiert und segfaults vermeidet.
-						hört sich erstmal nicht so besonders an, oder? wir werden im laufe des talks auf die
-						eigenschaften blicken -> aber nun erstmal was code...
+						<ul>
+							<li>prevents segfaults - kennt jemand segfaults?</li>
+							<li>
+								Das sind die Fehler die z.b.
+								<ul>
+									<li>PHP Intern sind und kein spass zum Debuggen machen</li>
+									<li>hab ich häufiger mal wenn ich gewaltige tests suits laufen lasse</li>
+									<li>
+										Wäre PHP also in Rust geschrieben, dann könnte es diese art von Fehlern nicht geben?
+										<ul>
+											<li>Krass</li>
+											<li>Absolutes alleinstellungsmerkmal unter "System programming" sprachen.</li>
+										</ul>
+									</li>
+									<li>
+										thread safety ist auch so ne sache
+										<ul>
+											<li>Threading ist hart</li>
+											<li>Rust ist die erste sprache, welche thread safety erzwingen kann</li>
+										</ul>
+									</li>
+									<li>
+										Wie macht rust das alles?
+										<ul>
+											<li>Es kompilliert schlicht nicht, wenn es sich nicht sicher ist.</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
 					</aside>
 				</section>
 
@@ -319,23 +533,29 @@ echo sprintf("Tim is %d years old", $tim->age);
 				<section>
 					<img src="mozilla.png">
 
-					<div class="notes">
-						Stell dir vor, du bist Mozilla.
-						Welche Sprache würdest du verwenden um den Next Gen. Firefox zu bauen?
+					<aside class="notes">
+						<ul>
+							<li>Rust wurde von Mozilla entwickelt</li>
+							<li>Mozilla hat das Problem, dass sie eine gewaltige C / C++ Base haben</li>
+							<li>
+								9 Jahre hat Mozilla daran gewerkelt an Rust zu arbeiten
+							</li>
+							<li>Stell dir vor, du bist Mozilla.</li>
+							<li>Es gibt (für mich) ein paar Sprachgattungen.</li>
+						</ul>
 
-						Es gibt (für mich) ein paar Sprachgattungen.
-					</div>
+					</aside>
 				</section>
 
 				<section>
 					<img src="img_lang_types/interpreter.png">
 
 					<aside class="notes">
-						PHP ist eine Interpreter Sprache.
-						Warum eigenet sich eine Sprache wie PHP (oder z.b. Python) nicht so gut, um einen Browser zu entwickeln?
-						Android?
-
-						- viel zu langsam
+						<ul>
+							<li>Erste Gattung: Interpretersprachen</li>
+							<li>Warum eigenet sich eine Sprache wie PHP (oder z.b. Python) nicht so gut, um einen Browser zu entwickeln?</li>
+							<li>Android</li>
+						</ul>
 					</aside>
 				</section>
 
@@ -343,11 +563,12 @@ echo sprintf("Tim is %d years old", $tim->age);
 					<img src="img_lang_types/jit.png">
 
 					<aside class="notes">
-						Warum eignet sich z.b. Java nicht um z.b. einen Browser zu implementieren?
-
-						- Langsam
-						- Oft kostspielige Runtime -> Ramverbrauch ist eklig...
-						- Native schnittstellen sind nicht wirklich nutzbar -> OS ist in anderer Sprache geschrieben.
+						<ul>
+							<li>Warum eignet sich z.b. Java nicht um z.b. einen Browser zu implementieren?</li>
+							<li>Langsam</li>
+							<li>Kostspielig (Ramverbrauch ....)</li>
+							<li>Native schnittstellen sind nicht wirklich nutzbar -> OS ist in anderer Sprache geschrieben.</li>
+						</ul>
 					</aside>
 				</section>
 
@@ -355,14 +576,18 @@ echo sprintf("Tim is %d years old", $tim->age);
 					<img src="img_lang_types/native_runtime.png">
 
 					<aside class="notes">
-						Eine recht frisch aufstrebene Gattung von Sprache:
-
-						Nativer Code welcher eine eigene Runtime mitbringt.
-						Gründe werden weniger, fällt wem noch was ein?
-
-						- GC ist ein problem, stellt euch ein videoplayback vor, was hin und wieder mal stoppt weil der gc läuft (bei Java teilweise minuten (TB Ram))
-						- Durch den GC kann man nicht wirklich sinnvoll C callen, bzw von C gecalled werden.
-						- Treiber oder PHP Extensions lassen sich aus diesem grund nicht wirklich sinnvoll mit solchen sprachen schreiben.
+						<ul>
+							<li>Eine recht frisch aufstrebene Gattung von Sprache</li>
+							<li>Nativer Code welcher eine eigene Runtime mitbringt.</li>
+							<li>
+								Gründe werden weniger, fällt wem noch was ein?
+								<ul>
+									<li>GC ist ein problem, stellt euch ein videoplayback vor, was hin und wieder mal stoppt weil der gc läuft (bei Java teilweise minuten (TB Ram))</li>
+									<li>Durch den GC kann man nicht wirklich sinnvoll C callen, bzw von C gecalled werden.</li>
+									<li>Treiber oder PHP Extensions lassen sich aus diesem grund nicht wirklich sinnvoll mit solchen sprachen schreiben.</li>
+								</ul>
+							</li>
+						</ul>
 					</aside>
 				</section>
 
@@ -370,7 +595,6 @@ echo sprintf("Tim is %d years old", $tim->age);
 					<img src="img_lang_types/native_without_rust.png">
 					<div class="notes">
 						- In diesen Sprachen geht das, aber warum macht's kein spass?
-
 						-> und dennoch
 					</div>
 				</section>
@@ -387,14 +611,15 @@ echo sprintf("Tim is %d years old", $tim->age);
 					</h2>
 
 					<aside class="notes">
-						Warum ist das eigentlich so?
-						Mozilla beispielsweise hat das Problem, dass es Firefox maintaint.
-						Firefox ist ein gewaltiges C++ Projekt.
-						Trotz enormer sorgfalt, gibt es immer wieder segaults und sicherheitsprobleme mit dem speichermanagement.
-						threading ist unheimlich hart (dadurch oft nicht optimal eingesetzt u.s.w.)
-						Warum aber muss Mozilla C++ oder C für den Firefox verwenden?
+						<ul>
+							<li>Warum ist das eigentlich so?</li>
+							<li>Mozilla beispielsweise hat das Problem, dass es Firefox maintaint.</li>
+							<li>Trotz enormer sorgfalt, gibt es immer wieder segaults und sicherheitsprobleme mit dem speichermanagement.</li>
+							<li>threading ist unheimlich hart (dadurch oft nicht optimal eingesetzt u.s.w.)
+							<li>Warum aber muss Mozilla C++ oder C für den Firefox verwenden?</li>
+						</ul>
 
-						vergleichen wir doch mal unterschiedliche Sprachen...
+						Und wo gleidert sich rust hier ein?
 					</aside>
 				</section>
 
@@ -406,11 +631,18 @@ echo sprintf("Tim is %d years old", $tim->age);
 					<a href="https://www.youtube.com/watch?v=agzf6ftEsLU">youtube.com/watch?v=agzf6ftEsLU</a>
 
 					<aside class="notes">
-						- Rust setzt genau hier ein, und versucht sich in diese Sprachfamilie zu finden.
-						- warum aber, findet so wenig bewegung in dieser Sprachgruppe statt?
-						- Rust zu entwickeln war sehr hart -> Mozilla hat hierfür 9 Jahre Researcharbeit investiert.
-						- Wofür aber hat Mozilla diese gebraucht? Vergleichen wir das ganze mal mit der restlichen Sprachfamilie.
-					</aside>
+						<ul>
+							<li>Rust setzt genau hier an und ist in der C / C++ Sprachfamilie</li>
+							<li>Ist C und C++ in der Sprachentwicklung allerdings um Jahrzehnte vorraus.</li>
+							<li>
+								Mozilla hat sehr hart daran entwickelt
+								<ul>
+									<li>Vermutlich eine der Sprachen mit dem höchsten Researcheinsatz</li>
+								</ul>
+							</li>
+						</ul>
+
+						Hier ein paar Goodies die Rust mitbringt.
 				</section>
 
 				<section>
@@ -466,7 +698,7 @@ echo sprintf("Tim is %d years old", $tim->age);
 					</aside>
 
 				</section>
-
+<!--
 				<section>
 					<h2>
 						Kein GC, Effizientes Speichermanagement.<br/>
@@ -483,9 +715,9 @@ echo sprintf("Tim is %d years old", $tim->age);
 				</section>
 
 				<section>
-					<pre>
-#include<stdio.h>
-#include<stdlib.h>
+					<pre><code data-trim data-noescape>
+#include&lt;stdio.h&gt;
+#include&lt;stdlib.h&gt;
 
 int main() {
 
@@ -498,14 +730,14 @@ int main() {
 
 	return 0;
 }
-					</pre>
+					</code></pre>
 					<aside class="notes">
 						gcc -c main.c
 					</aside>
 				</section>
 
 				<section>
-					<pre>
+					<pre><code data-trim data-noescape>
 /usr/local/Cellar/valgrind/HEAD/bin/valgrind --tool=memcheck ./a.out
 ==6343== Memcheck, a memory error detector
 ==6343== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
@@ -527,16 +759,16 @@ ab==6343==
 ==6343==
 ==6343== For counts of detected and suppressed errors, rerun with: -v
 ==6343== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-					</pre>
+					</code></pre>
 					<aside class="notes">
 						gcc -c main.c
 					</aside>
 				</section>
 				<section>
-					<pre>
+					<pre><code data-trim data-noescape>
 ➜  c1 /usr/local/Cellar/valgrind/HEAD/bin/valgrind --tool=memcheck ./a.out
-#include<stdio.h>
-#include<stdlib.h>
+#include&lt;stdio.h&gt;
+#include&lt;stdlib.h&gt;
 
 int main() {
 
@@ -551,13 +783,13 @@ int main() {
 
     return 0;
 }
-					</pre>
+					</code></pre>
 					<aside class="notes">
 						mit free
 					</aside>
 				</section>
 				<section>
-					<pre>
+					<pre><code data-trim data-noescape>
 /usr/local/Cellar/valgrind/HEAD/bin/valgrind --tool=memcheck ./a.out
 ==6458== Memcheck, a memory error detector
 ==6458== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
@@ -580,16 +812,16 @@ ab==6458==
 ==6458==
 ==6458== For counts of detected and suppressed errors, rerun with: -v
 ==6458== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-					</pre>
+					</code></pre>
 					<aside class="notes">
 						mit free
 					</aside>
 				</section>
 				<section>
-					<pre>
+					<pre><code data-trim data-noescape>
 ➜  c1 /usr/local/Cellar/valgrind/HEAD/bin/valgrind --tool=memcheck ./a.out
-#include<stdio.h>
-#include<stdlib.h>
+#include&lt;stdio.h&gt;
+#include&lt;stdlib.h&gt;
 
 int main() {
 
@@ -605,13 +837,13 @@ int main() {
 
     return 0;
 }
-					</pre>
+					</code></pre>
 					<aside class="notes">
 						mit free
 					</aside>
 				</section>
 				<section>
-					<pre>
+					<pre><code data-trim data-noescape>
 /usr/local/Cellar/valgrind/HEAD/bin/valgrind --tool=memcheck ./a.out
 ==6568== Memcheck, a memory error detector
 ==6568== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
@@ -644,17 +876,27 @@ ab==6568==
 ==6568==
 ==6568== For counts of detected and suppressed errors, rerun with: -v
 ==6568== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
-					</pre>
+					</code></pre>
 					<aside class="notes">
 						mit free
 					</aside>
 				</section>
-
+-->
 				<section>
-					<img src="ownership_in_c.png.png"/>
+					<img src="ownership_in_c.png"/>
 					<br/>
 					<a href="http://people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/4/1">people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/4/1</a>
-
+					<aside class="notes">
+						<ul>
+							<li>Die Folie hab ich geklaut</li>
+							<li>Hier ein wenig C code</li>
+							<li>Das problem ist, dass slot verwendet wird, nachdem es freigegeben wird.</li>
+							<li>Die funktion helper gibt slot frei</li>
+							<li>angenommen eine funktion gibt einen string zurück, welche funktion gibt diesen wieder frei?</li>
+							<li>Urproblem aller segfaults ...</li>
+							<li>Ich hatte zu dem thema einige slides, die finden sich auskommentiert in meinem Repo inkl einer C Beispielanwendung die ich aus zeitgründen heut nicht mit euch durchgehe</li>
+						</ul>
+					</aside>
 				</section>
 
 				<section>
@@ -670,11 +912,35 @@ pub fn main() {
 	let name = "PHPUG".to_string();
 
 	greet(name);
+	greet(name);
 }
 					</div>
+
+					<div class="php_example" data-php-example="https://3v4l.org/OB8EK">
+
+function greet(string $name) {
+    echo "Hello ". $name . "\n";
+}
+
+$name = "PHPUG";
+greet($name);
+greet($name);
+					</div>
+
 					<aside class="notes">
-						- String zu Integer tauschen und zeigen, dass es geht.
-						- String zu slice tauschen, und Zeigen, dass es geht.
+						<ul>
+							<li>Fehlermeldung ansehen</li>
+							<li>PHP Code ansehen</li>
+							<li>einen Aufruf wegnehmen</li>
+							<li>String zu Integer tauschen und zeigen, dass es geht.</li>
+							<li>
+								in C programmen sieht man oft, dass irgendwas aus "sicherheitsgründen" sprich weil niemend mehr durchblickt kopiert wird,
+								durch das "sichere" moven kann man hier echt performance rausholen.
+							</li>
+							<li>
+								alles zero cost -> keine runtime performance
+							</li>
+						</ul>
 					</aside>
 				</section>
 				<section>
@@ -694,8 +960,12 @@ pub fn main() {
 }
 					</div>
 					<aside class="notes">
-						- String zu Integer tauschen und zeigen, dass es geht.
-						- String zu slice tauschen, und Zeigen, dass es geht.
+						<ul>
+							<li>Die alternative sind referenzen</li>
+							<li>Referenzen können mutable oder immuntable sein</li>
+							<li>Wichtig ist, sie können das objekt nicht löschen</li>
+							<li>Zero cost ...</li>
+						</ul>
 					</aside>
 				</section>
 
@@ -720,6 +990,17 @@ fn main() {
     thread::sleep(Duration::from_millis(50));
 }
 						</div>
+
+					<aside class="notes">
+						<ul>
+							<li>etwas komplexeres Beispiel</li>
+							<li>ein Owner kann ein Struct oder eine Funktion sein</li>
+							<li>in diesem Fall (syntax für lambda) wird eine Lambda erstelt</li>
+							<li>die lambda wird owner von data</li>
+							<li>Data kann nur einen Owner haben -> womit dies nicht kompilliert</li>
+						</ul>
+					</aside>
+
 				</section>
 
 				<section>
@@ -742,6 +1023,13 @@ fn main() {
     thread::sleep(Duration::from_millis(50));
 }
 						</div>
+					<aside class="notes">
+						<ul>
+							<li>ein Quick Fix wäre einfach die daten zu kopieren</li>
+							<li>dies ist nun threadsafe weil x in die lambda gemoved werden kann</li>
+							<li>doof nur, dass man diese ja dann nicht mehr ausgeben kann</li>
+						</ul>
+					</aside>
 				</section>
 
 				<section>
@@ -764,10 +1052,21 @@ fn main() {
     thread::sleep(Duration::from_millis(50));
 }
 					</div>
+					<aside class="notes">
+						<ul>
+							<li>Um das wirklicj zu fixen brauchen wir sowas wie einen Mutex</li>
+							<li>Dieser hebelt mit sogenannten unsafe code den borrow checker aus</li>
+							<li>Der mutex selbst ist also in Rust geschrieben</li>
+							<li>Wir beschäftigen uns heute nicht damit wie dieser intern funktioniert</li>
+							<li>wichtig ist, es ist total safe diesen zu nutzen.</li>
+							<li>Fehler führen schlicht dazu, dass dies nicht kompilliert.</li>
+						</ul>
+					</aside>
 				</section>
 
 				<section>
-					<h1>Rusts Ownership bedeutet sichere parallele Programmierung.</h1>
+					<h3>Rusts Ownership bedeutet sichere parallele Programmierung.</h3>
+					<h5>Selbst wenn PHP-Entwickler involviert sind.</h5>
 					<aside class="notes">
 						absolutes alleinstellungsmerkmal.
 						es gibt nette libs, die regeln sind auch bei denen "erzwungen"
@@ -776,37 +1075,40 @@ fn main() {
 
 				<section>
 					<h1>Effizientes Memory Management.</h1>
-
+					<h5>Heap vs. Stack</h5>
 					<aside class="notes">
-						Warum ist ZTS langsamer? - Refcounter für die ZVals ist komplexer
+						<ul>
+							<li>
+								Warum wird PHP standardmäßig nicht thread safe kompilliert
+								<ul>
+									<li>refcounting ist z.b. kostspieliger</li>
+								</ul>
+							</li>
+						</ul>
 					</aside>
 				</section>
 
 				<section>
-					<div class="editor" data-php-example="https://3v4l.org/OdOXv">
+					<div class="editor">
 pub fn main() {
 	let a = "Foo";
 }
 					</div>
+					<div class="php_example" data-php-example="https://3v4l.org/OdOXv">
+$a = "Foo";
+					</div>
+
 				</section>
 
 				<section>
-					<div class="editor" data-php-example="https://3v4l.org/MMpFb">
+					<div class="editor">
 pub fn main() {
 	// Embeddet den UTF-8 String "Foo" in der Binary
 	// erstellt eine Referenz auf den "String-Slice" und erlaubt den Zugriff via a
 	let a = "Foo";
 }
 					</div>
-					<aside class="notes">
-						let a = "Foo".to_string();
-						println!("{}", a);
-
-						den assembler code (release) von der menge zeigen.
-					</aside>
-					<!--
-<?php
-
+					<div class="php_example" data-php-example="https://3v4l.org/MMpFb">
 // Frag den Ram nach Platz für ne Zval
 //
 // typedef union _zvalue_value {
@@ -824,13 +1126,28 @@ pub fn main() {
 
 $a = "Foo";
 // und prüf hin und wieder und am ende, ob die variable noch gebraucht wird
-					-->
+
+					</div>
+					<aside class="notes">
+						let a = "Foo".to_string();
+						println!("{}", a);
+
+						den assembler code (release) von der menge zeigen.
+					</aside>
 				</section>
 
 
 				<section>
 					<h2>Installation</h2>
 					Rustup / (apt / compile your own / phpbrew)
+
+					<aside class="notes">
+						<ul>
+							<li>Bei Rust ist es so, dass die stable im packagemanager ist.</li>
+							<li>Alle nutzen aber eigentlich das rustup projekt welches sowas ist wie phpbrew</li>
+							<li>bei php kompilliere ich mir idr die versionen selbst.</li>
+						</ul>
+					</aside>
 				</section>
 
 				<section>
@@ -839,6 +1156,13 @@ $ phpbrew install 5.4.0 +default
 
 $ phpbrew use 5.4.22
 					</pre>
+					<aside class="notes">
+						<ul>
+							<li>phpbrew verwaltet also mehrere php versionen gleichzeitig</li>
+							<li>man kann dann einfach sagen welche man haben möchte und diese wechseln</li>
+							<li>so kann man auch einfach extensions mit drauf installieren</li>
+						</ul>
+					</aside>
 				</section>
 
 				<section>
@@ -846,11 +1170,23 @@ $ phpbrew use 5.4.22
 $ curl https://sh.rustup.rs -sSf | sh
 
 $ rustup default nightly
-
 					</pre>
 					<aside class="notes">
-						rustup update
-						rustup default
+
+						<ul>
+							<li>Rustup funktioniert wie phpbrew</li>
+							<li>einfaches update command und man ist auf der neusten version.</li>
+							<li>den bedarf für module gibts nicht, weil rust ja in rust geschrieben ist</li>
+							<li>
+								Rustup kann auch sehr einfach Cross kompilieren
+								<ul>
+									<li>Das Rust Team arbeietet hard daran, dass es kein Problem ist</li>
+									<li>Von Windows auf Linux zu kompillieren</li>
+									<li>von Irgendwas auf ARM</li>
+									<li>Momentan werden 32 Targets unterstützt, sowas wie Android, Freebsd, Powerpc...</li>
+								</ul>
+							</li>
+						</ul>
 
 						➜  rust_for_php_devs git:(master) ✗ rustup toolchain list
 						stable-x86_64-apple-darwin
@@ -910,77 +1246,99 @@ $ cargo run
 mod foo;
 					</div>
 
+					<div class="php_example" data-php-example="https://3v4l.org/pcmBV">
 
-					<!--
-<?php
 
-if (file_exists($mod.'.rs') && file_exists($mod.'/mod.rs')) {
-    throw new \Exception('[file].rs and [file]/mod.rs exists.');
+if (
+	file_exists($mod.'.rs') &&
+	file_exists($mod.'/mod.rs')
+) {
+    throw new \Exception(
+        '[file].rs or [file]/mod.rs?'
+    );
 } else if (file_exists($mod.'.rs')) {
     include $mod.'.rs';
 } else if (file_exists($mod.'.rs')) {
     include $mod.'/mod.rs';
 }
-					-->
-				</section>
-
-				<section>
-					<h3>Autoloader + Namespaces</h3>
-					<div class="editor" data-php-example="https://3v4l.org/pcmBV">
-						use foo::Bar;
-						use foo::{Bar, Bazz};
-						pub use foo::Bar;
 					</div>
 
 					<aside class="notes">
-						use immer ab dem "Root",
-						pub use wird genutzt, um module anderen "crates" zur Verfügung zu stellen, sprich anderen Bibliotheken.
-						In php ist es so, dass alles immer zugriff auf alles hat.
-						Deptrac ist ein Tool was genau dieses fehlende Sprachfeature kompensiert.
-						in Java gibts auch public classes.
+						<ul>
+							<li>mod ist quasi das include von rust</li>
+							<li>natürlich komplett compile time</li>
+							<li>es funktioniert ein wenig so wie der code</li>
+							<li>es prüft ob foo.rs da ist</li>
+							<li>es prüft ob foo/mod.rs da ist</li>
+							<li>das liebe ich so an rust: wenn beides da ist gibts nen fehler</li>
+							<li>rust versucht immer maximal strikt zu bleiben, implizite typenumwandlungen gibt es in rust z.b. auch nicht</li>
+						</ul>
 					</aside>
 				</section>
 
 				<section>
-					<h1>Lets "write" a small webserver.</h1>
+					<h3>Autoloader + Namespaces</h3>
+					<div class="editor">
+use foo::Bar;
+use foo::{Bar, Bazz};
+pub use foo::Bar;
+					</div>
+
+					<aside class="notes">
+						<ul>
+							<li>use ist wie in php</li>
+							<li>pub use wird genutzt, um module anderen "crates" zur Verfügung zu stellen, sprich anderen Bibliotheken.</li>
+							<li>In php ist es so, dass alles immer zugriff auf alles hat.</li>
+							<li>Deptrac ist ein Tool was genau dieses fehlende Sprachfeature kompensiert.</li>
+							<li>in Java gibts auch public classes.</li>
+						</ul>
+					</aside>
 				</section>
 
 				<section>
-					<pre>
+					<h5>Lets "write" a small webserver.</h5>
+				</section>
+
+				<section>
+					<pre><code data-trim data-noescape>
 $ cargo new --bin webfoo
-					</pre>
-					Cargo.toml:
-					<pre>
+					</code></pre>
+					<pre><code data-trim data-noescape>
 [dependencies]
 nickel = "*"
-					</pre>
-					main.rs:
-					<pre>
+					</code></pre>
+					<pre><code data-trim data-noescape>
 #[macro_use] extern crate nickel;
 
 use nickel::{Nickel, HttpRouter};
 
 fn main() {
-    let mut server = Nickel::new();
+	let mut server = Nickel::new();
 
-    server.get("/", middleware!(
+	server.get("/", middleware!(
 		let a = "Hello World";
-
 		a
 	));
 
-    server.get("/bar", middleware!("Bar"));
-
-    server.listen("127.0.0.1:6767");
+	server.get("/bar", middleware!("Bar"));
+	server.listen("127.0.0.1:6767");
 }
-					</pre>
-					<pre>
-cargo run
-					</pre>
+					</code></pre>
+					<pre><code data-trim data-noescape>
+$ cargo run
+					</code></pre>
+
+					<aside class="notes">
+						<ul>
+							<li>das wars, probiert es aus.</li>
+							<li>hat eher so ein wenig node.js charm</li>
+							<li>garantiert thread safe, selbst wenn ich den code daginter nicht verstehe - rust garantierts mir</li>
+						</ul>
+					</aside>
 				</section>
 
 				<section>
-					<h3>Ein wenig mehr OOP:</h3>
+					<h3>Ein wenig mehr OOP</h3>
 				</section>
 
 				<section>
@@ -1009,6 +1367,36 @@ fn main() {
     println!("Tim is {} years old", tim.get_age());
 }
 					</div>
+					<div class="php_example" data-php-example="https://3v4l.org/JOsMi">
+
+class Person {
+
+    private $age;
+
+    function __construct($age) {
+        $this->age = $age;
+    }
+
+    function getAge() {
+        return $this->age;
+    }
+}
+
+echo sprintf(
+	"Tim is %d years old",
+	(new Person(25))->getAge()
+);
+					</div>
+					<aside class="notes">
+						<ul>
+							<li>mir ist immer oop ganz wichtig, daher hier noch mal ein oop example</li>
+							<li>hier sehen wir auch das erste mal einen gett</li>
+							<li>achtet mal genau auf das &self</li>
+							<li>das ist wie bei python</li>
+							<li>funktionen mit dem &self, leihen sich eine referenz darauf, klassische methoden</li>
+							<li>methoden ohne self sind static</li>
+						</ul>
+					</aside>
 				</section>
 
 				<section>
@@ -1049,7 +1437,7 @@ fn main() {
 
 					</div>
 					<aside class="notes">
-
+						einfache arrays ...
 					</aside>
 				</section>
 
@@ -1068,7 +1456,7 @@ fn main() {
 
 					</div>
 					<aside class="notes">
-
+						arrays sind "veränderbar" nicht so wie bei c
 					</aside>
 				</section>
 
@@ -1083,8 +1471,6 @@ fn main() {
 
     println!("{}", names.join(", "));
 }
-
-
 
 					</div>
 					<div class="notes">
@@ -1111,7 +1497,7 @@ fn main() {
 #[derive(Debug)]
 struct BlogPost;
 
-fn get_blog_post_by_uuid(uuid : &str) -> Option<BlogPost> {
+fn get_blog_post_by_uuid(uuid : &str) -> Option&lt;BlogPost&gt; {
 	if uuid == "1234-abcdef" {
 		return Some(BlogPost {});
 	}
@@ -1125,7 +1511,15 @@ fn main() {
 }
 					</div>
 					<aside class="notes">
-
+						<ul>
+							<li>Rust kennt kein "Null"</li>
+							<li>Rust kennt nur "options"</li>
+							<li>kann das sein, oder nichts</li>
+							<li>Prüft man nicht, sondern ruft einfach "unwrap" auf einer option auf, so panict im zweifel das programm und ist beendet</li>
+							<li>das programm ist somit nie in einem "komischen" zustand</li>
+							<li>benutzt man unwrap nicht, kann das programm in keinen dieser zustände kommen</li>
+							<li>wer würde schon ein herzschrittmacher in php entwickeln?</li>
+						</ul>
 					</aside>
 				</section>
 
@@ -1136,9 +1530,9 @@ fn main() {
 fn main() {
 	let numbers = vec![1, 2, 3, 4, 5, 6, 10, 100];
 
-	let result: Vec<_> = numbers.iter()
-	.filter(|&x| *x > 4)
-	.filter(|&x| *x < 100)
+	let result: Vec&lt;_&gt; = numbers.iter()
+	.filter(|&x| *x &gt; 4)
+	.filter(|&x| *x &lt; 100)
 	.map(|x| x * 2)
 	.chain(10..11)
 	.collect();
@@ -1147,40 +1541,39 @@ fn main() {
 }
 
 					</div>
-					<aside class="notes">
-<!--
-
-<?php
-
+					<div class="php_example" data-php-example="https://3v4l.org/JOsMi">
 $numbers = [1, 2, 3, 4, 5, 6, 10, 100];
 
 $result =
-    array_values(array_map(
-        function($a) { return $a * 2; },
-        array_filter(
-            array_filter($numbers, function($a) { return $a > 4; }),
-            function($a) { return $a < 100; }
-        )
-    ));
+	array_values(array_map(
+		function($a) { return $a * 2; },
+		array_filter(
+			array_filter($numbers, function($a) { return $a > 4; }),
+			function($a) { return $a < 100; }
+		)
+	));
 
 $result[] = 10;
 $result[] = 11;
 
 var_dump($numbers);
 
--->
+					</div>
+
+					<aside class="notes">
+
 					</aside>
 				</section>
 
 				<section>
 					<h3>Generics</h3>
-					<div class="editor" data-php-example="https://3v4l.org/Sp3qc">
-enum May<T> {
+					<div class="editor">
+enum May&lt;T> {
     Value(T),
     Empty
 }
 
-impl<T> May<T> {
+impl&lt;T&gt; May&lt;T&gt; {
     pub fn unwrap(&self) -> &T {
         match self {
             &May::Value(ref v) => v,
@@ -1190,14 +1583,13 @@ impl<T> May<T> {
 }
 
 fn main() {
-    println!("{}", May::Value::<i32>(10).unwrap());
-    println!("{}", (May::Empty::<i32>).unwrap());
+    println!("{}", May::Value::&lt;i32&gt;(10).unwrap());
+    println!("{}", (May::Empty::&lt;i32&gt;).unwrap());
 }
 					</div>
-					<!--
-<?hh
+					<div class="php_example" data-php-example="https://3v4l.org/Sp3qc">
 
-class Option<T> {
+class Option&lt;T&gt; {
 
     private T $value;
 
@@ -1211,9 +1603,10 @@ class Option<T> {
     }
 }
 
-echo (new Option<String>("hello"))->unwrap();
-echo (new Option<String>(null))->unwrap();
-					-->
+echo (new Option&lt;String&gt;("hello"))->unwrap();
+echo (new Option&lt;String&gt;(null))->unwrap();
+
+					</div>
 				</section>
 
 				<section>
@@ -1268,6 +1661,11 @@ echo (new Option<String>(null))->unwrap();
 				</section>
 				<section>
 					<img src="projects/rust_vulkan.png"/>
+				</section>
+
+				<section>
+					<h3>thx :)</h3>
+					<h4>Fragen?</h4>
 				</section>
 
 				<section>
@@ -1327,10 +1725,10 @@ fn main() {
 				dependencies: [
 					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
 					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } }
-				//	{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-				//	{ src: 'plugin/zoom-js/zoom.js', async: true },
-				//	{ src: 'plugin/notes/notes.js', async: true }
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					//{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
 				]
 			});
 
