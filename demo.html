@@ -67,7 +67,7 @@
 
 				$(v).append($('<iframe style="flex: 1 1 auto;overflow:scroll"/>').attr('src', rust_pen + '/?code=' + rust_code));
 
-				var php_code_node = $('<div><pre><code data-trim data-noescape>' + php_code + '</code></pre><center><small><i>(clickable)</i></small></center></div>');
+				var php_code_node = $('<div><pre><code data-trim data-noescape class="php">' + php_code + '</code></pre><center><small><i>(clickable)</i></small></center></div>');
 
 				$(v).append($('<div style="flex: 1 1 auto;overflow:scroll"/>').html(php_code_node));
 
@@ -365,7 +365,6 @@ pub fn main() {
 }
 					</div>
 					<div class="php_example" data-php-example="https://3v4l.org/s9cMe">
-
 class Person {
     public $age = null;
 }
