@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>reveal.js – The HTML Presentation Framework</title>
+		<title>Rust for php devs</title>
 
 		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
 		<meta name="author" content="Hakim El Hattab">
@@ -80,13 +80,17 @@
 				}
 			});
 
-			$('.editor > *').mouseenter(function(e) {
+			$('.editor > *').each(function(i, v) {
+				//$(v).css('margin', '10px');
+			}).mouseenter(function(e) {
 				$(e.target).css('flex', '95 1 auto');
-				$(e.target).siblings().css('width', '100');
+				$(e.target).siblings().css('width', 100);
+				$(e.target).siblings().css('flex', '1 1 auto');
 			})
 			.mouseleave(function(e) {
 				$(e.target).css('flex', '1 1 auto');
-				$(e.target).siblings().css('width', null);
+				$(e.target).css('width', '');
+				$(e.target).siblings().css('width', '');
 			});
 		});
 
@@ -593,10 +597,11 @@ echo sprintf("Tim is %d years old", $tim->age);
 
 				<section>
 					<img src="img_lang_types/native_without_rust.png">
-					<div class="notes">
-						- In diesen Sprachen geht das, aber warum macht's kein spass?
-						-> und dennoch
-					</div>
+					<aside class="notes">
+						<ul>
+							<li>In diesen Sprachen geht das, aber warum macht's kein spass?</li>
+						</ul>
+					</aside>
 				</section>
 
 				<section>
@@ -1661,6 +1666,36 @@ echo (new Option&lt;String&gt;(null))->unwrap();
 				</section>
 				<section>
 					<img src="projects/rust_vulkan.png"/>
+				</section>
+
+				<section>
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/u0hYIRQRiws" frameborder="0" allowfullscreen></iframe>
+				</section>
+
+				<section>
+					<img src="why_rust/rust_dropbox.png">
+				</section>
+
+				<section>
+					<img src="why_rust/why_rust.png">
+				</section>
+
+
+				<section>
+					<img src="why_rust/rust_forks.png">
+				</section>
+
+				<section>
+					<img src="rust_survey/time_using_rust.png">
+				</section>
+				<section>
+					<img src="rust_survey/do_you_use_rust_at_work.png">
+				</section>
+				<section>
+					<img src="rust_survey/do_you_plan_to_use_rust_at_work.png">
+				</section>
+				<section>
+					<img src="rust_survey/what_areas_do_you_work_in.png">
 				</section>
 
 				<section>
