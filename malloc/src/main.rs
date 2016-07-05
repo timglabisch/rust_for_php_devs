@@ -11,5 +11,4 @@ fn main() {
     loop {
         println!("{}", foo());
     }
-
 }

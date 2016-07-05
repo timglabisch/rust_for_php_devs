@@ -58,7 +58,7 @@
 					return;
 				}
 
-				var php_code = $(v).parent().find('.php_example').html().trim().replace(/\&gt\;/g, '>').replace(/\&lt\;/g, '<').replace(/\&amp\;/g, '&');
+				var php_code = $(v).parent().find('.php_example').html().trim();//.replace(/\&gt\;/g, '>').replace(/\&lt\;/g, '<').replace(/\&amp\;/g, '&');
 				var php_example_url = $(v).parent().find('.php_example').data('php-example');
 
 
@@ -1091,7 +1091,7 @@ fn main() {
 						</ul>
 					</aside>
 				</section>
-
+<!--
 				<section>
 					<div class="editor">
 pub fn main() {
@@ -1103,6 +1103,7 @@ $a = "Foo";
 					</div>
 
 				</section>
+-->
 
 				<section>
 					<div class="editor">
@@ -1138,6 +1139,40 @@ $a = "Foo";
 
 						den assembler code (release) von der menge zeigen.
 					</aside>
+				</section>
+
+				<section>
+					<div class="editor">
+# sudo dtrace -n 'pid$target::malloc:entry' -c "./target/release/malloc"
+
+pub fn foo() -> &'static str {
+    return "fooooo";
+}
+
+fn main() {
+
+    println!("------------");
+
+    loop {
+        println!("{}", foo());
+    }
+}
+					</div>
+					<div class="php_example">
+# sudo dtrace -n 'pid$target::malloc:entry' -c "php malloc.php"
+
+function foo() {
+    return "fooooo";
+}
+
+echo "------------------------\n";
+sleep(2);
+
+while(true) {
+    $a = foo();
+    sleep(0.5);
+}
+					</div>
 				</section>
 
 
