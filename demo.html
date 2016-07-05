@@ -1276,7 +1276,7 @@ $ cargo run
 
 				<section>
 					<h2>PHP "Basics"</h2>
-					include, autoloader, namespaces, composer (semver),
+					include, autoloader, namespaces, tests
 				</section>
 
 				<section>
@@ -1330,6 +1330,34 @@ pub use foo::Bar;
 							<li>In php ist es so, dass alles immer zugriff auf alles hat.</li>
 							<li>Deptrac ist ein Tool was genau dieses fehlende Sprachfeature kompensiert.</li>
 							<li>in Java gibts auch public classes.</li>
+						</ul>
+					</aside>
+				</section>
+
+				<section>
+					<h3>Tests</h3>
+					<div class="editor">
+pub fn add_two(a: i32) -> i32 {
+    a + 2
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_works() {
+        assert_eq!(4, add_two(2));
+    }
+}
+					</div>
+
+					<aside class="notes">
+						<ul>
+							<li>cargo doc generiert api docs</li>
+							<li>beste api docs die ich kenne (mit suchfunktion)</li>
+							<li>api docs fürs ganze projekt</li>
+							<li>code beispiele werden als tests ausgeführt.</li>
 						</ul>
 					</aside>
 				</section>
@@ -1656,6 +1684,12 @@ echo (new Option&lt;String&gt;(null))->unwrap();
 					<img src="community/rust_community_team.png"/>
 				</section>
 				<section>
+					<img src="community/packagist_stats.png"/>
+				</section>
+				<section>
+					<img src="community/crates.png"/>
+				</section>
+				<section>
 					<img src="community/crates_index.png"/>
 				</section>
 				<section>
@@ -1701,6 +1735,12 @@ echo (new Option&lt;String&gt;(null))->unwrap();
 				<section>
 					<img src="projects/rust_vulkan.png"/>
 				</section>
+				<section>
+					<img src="projects/nom.png"/>
+				</section>
+				<section>
+					<img src="projects/tagua-vm.png"/>
+				</section>
 
 				<section>
 					<iframe width="560" height="315" src="https://www.youtube.com/embed/u0hYIRQRiws" frameborder="0" allowfullscreen></iframe>
@@ -1713,7 +1753,6 @@ echo (new Option&lt;String&gt;(null))->unwrap();
 				<section>
 					<img src="why_rust/why_rust.png">
 				</section>
-
 
 				<section>
 					<img src="why_rust/rust_forks.png">
@@ -1735,6 +1774,13 @@ echo (new Option&lt;String&gt;(null))->unwrap();
 				<section>
 					<h3>thx :)</h3>
 					<h4>Fragen?</h4>
+				</section>
+
+				<section>
+					<img src="rust_is_hard.png"/>
+					<small>
+						<a href="https://medium.com/@deckarep/paradigms-of-rust-for-the-go-developer-210f67cd6a29#.7chiq0tzq">https://medium.com/@deckarep/paradigms-of-rust-for-the-go-developer</a>
+					</small>
 				</section>
 
 				<section>
@@ -1770,6 +1816,131 @@ fn main() {
 }
 					</div>
 				</section>
+
+				<section>
+					<h3>map/reduce</h3>
+					<img src="MapReduce2.svg.png"/>
+				</section>
+
+				<section>
+					<h3>Mapper</h3>
+					<div class="editor">
+extern crate regex;
+use std::io;
+use std::io::prelude::*;
+use regex::Regex;
+
+fn main() {
+
+    let stdin = io::stdin();
+    let regex = Regex::new(r"(\d+)$").expect("failed to compile regex");
+
+    for line in stdin.lock().lines() {
+
+        let line : String = line.expect("failed to read line");
+        let captures = regex
+                        .captures(&line)
+                        .expect("failed to capture index")
+                        .at(0)
+                        .expect("failed to read int");
+
+        println!("{}\t1", captures);
+    }
+}
+					</div>
+					<div class="php_example">
+while (($line = fgets(STDIN)) !== false) {
+    $matches = [];
+    preg_match('/\d+$/', $line, $matches);
+    if (!isset($matches[0])) {
+        continue;
+    }
+    $url_number = $matches[0];
+    echo $url_number."\t".'1'."\n";
+}
+					</div>
+				</section>
+
+				<section>
+					<h3>Reducer</h3>
+					<div class="editor">
+use std::io;
+use std::io::prelude::*;
+
+fn main() {
+
+    let stdin = io::stdin();
+    let mut last_number : Option&lt;i32&gt; = None;
+    let mut last_count = 0;
+
+    for line in stdin.lock().lines() {
+
+        let line : String = line.expect("failed to read line");
+        let mut split = line.split("\t");
+
+        let key = split
+                    .next()
+                    .expect("key must be given")
+                    .parse::&lt;i32&gt;()
+                    .expect("key must be an int");
+
+        let value = split
+                    .next()
+                    .expect("value must be given")
+                    .parse::&lt;i32&gt;()
+                    .expect("value must be an int");
+
+        if last_number.is_none() {
+            last_number = Some(key);
+        }
+
+        if last_number.unwrap() == key {
+            last_count += value;
+            continue;
+        }
+
+        println!(
+            "{}\t{}",
+            last_number.expect("number cant be null"),
+            last_count
+        );
+
+        last_count = 1;
+        last_number = Some(key);
+    }
+
+    if last_count != 0 && last_number.is_some() {
+        println!(
+            "{}\t{}",
+            last_number.expect("number cant be null"),
+            last_count
+        );
+    }
+}
+					</div>
+					<div class="php_example">
+$lastNumber = null;
+$lastCount = 0;
+while (($line = fgets(STDIN)) !== false) {
+    list($number, $count) = explode("\t", $line);
+    if ($lastNumber === null) {
+        $lastNumber = $number;
+    }
+    if ($lastNumber === $number) {
+        $lastCount++;
+        continue;
+    }
+    echo $lastNumber."\t".$lastCount."\n";
+    $lastCount = 1;
+    $lastNumber = $number;
+}
+if ($lastCount && $lastNumber) {
+    echo $lastNumber."\t".$lastCount."\n";
+}
+					</div>
+				</section>
+
+
 
 
 			</div>
