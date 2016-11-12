@@ -47,8 +47,8 @@
 					'justify-content': 'flex-start'
 				});
 
-				//var rust_pen = "http://127.0.0.1:8080/";
-				var rust_pen = "https://play.rust-lang.org/";
+				var rust_pen = "http://127.0.0.1:8080/";
+				//var rust_pen = "https://play.rust-lang.org/";
 
 				var rust_code = encodeURIComponent($(v).html().trim().replace(/\&gt\;/g, '>').replace(/\&lt\;/g, '<').replace(/\&amp\;/g, '&'));
 
@@ -196,6 +196,12 @@ better come closer =)
 							<li>Wer von euch hat sich denn hier eingeschlichen und ist garkein PHP Dev?</li>
 							<li>Wer von euch hat denn schon mal von Rust gehört?</li>
 							<li>Ich hatte den Talk ja irgendwann vorletzte Woche angekündigt und darauf folgte prompt diese Reaktion</li>
+							<li>
+								<ul>
+									<li>Auch wenn der Titel danach schreit, es ist vom Stoff her kein einfacher Talk</li>
+								</ul>
+
+							</li>
 						</ul>
 					</aside>
 
@@ -232,28 +238,17 @@ better come closer =)
 					<aside class="notes">
 						<ul>
 							<li>Ich bin Tim</li>
-							<li>Wer mich schon mal im Internet gesehen hat, vermutlich mit diesem Bild</li>
-							<li>
-								Ich Maintaine Deptrac primär
-								<ul>
-									<li>Wenn Deptrac doof ist, und rust doof ist, dann hab ich euch wohl den abend versaut x)</li>
-								</ul>
-							</li>
+							<li>Wer schonmal hier aus der UG war und nicht über mich hinweg gesehen hat, hat mich bestimmt schonmal gesehen</li>
 							<li>
 								... Und Github denkt ich würde in diesen Sprachen entwickeln
 								<ul>
 									<li>Das ist definitiv falsch, ich mach kein Basic x)</li>
+									<li>und CSS ist dieser Talk ^^</li>
 									<li>gibt aber vielleicht ein ganz guten Überblick über meinen "sprachlichen" Background</li>
 								</ul>
 							</li>
 							<li>
-								Ich arbeite hier für Sensiolabs
-								<ul>
-									<li>
-										Und wie jede andere Firma, suchen wir natürlich auch nach neuen tollen mitarbeitern,
-										wer also interesse hat, gerne einfach mich, andreas und freerich ansprechen.
-									</li>
-								</ul>
+								Ich arbeite hier für Sensiolabs als Architekt, habe demnach einen starken PHP und Symfony Background
 							</li>
 
 							<li>
@@ -262,6 +257,13 @@ better come closer =)
 									<li>In diesem Sinne hab ich heute viel Code mitgebracht</li>
 									<li>Ich hab aber auch viele Slides mitgebracht</li>
 									<li>Sollte ich euch deutlich zu schnell werden, einfach aufschreien oder mit irgendwas nach mir werfen.</li>
+									<li>
+										Die Slides stelle ich online
+										<ul>
+											<li>Wenn man den Talk gewissenhaft nacharbeitet, kann man einige Stunden damit verbringen</li>
+											<li>... und das ist gewollt so...</li>
+										</ul>
+									</li>
 								</ul>
 							</li>
 						</ul>
@@ -356,6 +358,7 @@ greet($name);
 							<li>Typisierung der Funktion (String) ist steht auf der rechten seite (ungewohnt)</li>
 							<li>sieht php recht ähnlich ...</li>
 							<li>ich werde für den Moment noch nicht auf das .to_string() eingehen, vielleicht schaffen wir das gleich noch</li>
+							<li>Wer sich mal mit Swift beschäftigt hat - Syntax ist nahezu 1 zu 1 gleich.</li>
 						</ul>
 					</aside>
 
@@ -554,7 +557,7 @@ echo sprintf("Tim is %d years old", $tim->age);
 							<li>
 								9 Jahre hat Mozilla daran gewerkelt an Rust zu arbeiten
 							</li>
-							<li>Stell dir vor, du bist Mozilla.</li>
+							<li>Stell dir vor, du bist Mozilla und musst einen Browser entwickeln. - Welche Sprache nimmst du?!</li>
 							<li>Es gibt (für mich) ein paar Sprachgattungen.</li>
 						</ul>
 
@@ -715,8 +718,30 @@ echo sprintf("Tim is %d years old", $tim->age);
 				</section>
 
 				<section>
+					<img src="why_performance.png">
+					<aside class="notes">
+						Performance ist halt wichtig...
+					</aside>
+				</section>
+				<section>
+					<img src="why_performance2.png">
+					<aside class="notes">
+						Und Rust wird als alternative zu C / C++ genutzt. - nicht GO.
+					</aside>
+				</section>
+
+				<section>
 					<img src="decisions_of_performance.png"><br/>
 					<a href="https://www.youtube.com/watch?v=9By9KLs51Dc">youtube.com/watch?v=9By9KLs51Dc</a>
+					<aside class="notes">
+						<ul>
+							<li>Der Link zeigt auf einen guten Talk, der das erklärt, was wir uns ansehen in Swift</li>
+							<li>Swift geht hier Komprimisse ein, bei Rust sind wir immer so weit wie möglichst links</li>
+							<li>möglichst stack allocationen</li>
+							<li>kein GC für Refcounting</li>
+							<li>möglichst immer static method dispatch</li>
+						</ul>
+					</aside>
 				</section>
 <!--
 				<section>
@@ -902,7 +927,7 @@ ab==6568==
 					</aside>
 				</section>
 -->
-				<section>
+<!--				<section>
 					<img src="ownership_in_c.png"/>
 					<br/>
 					<a href="http://people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/4/1">people.mozilla.org/~acrichton/rust-talk-2014-12-10/#/4/1</a>
@@ -918,31 +943,251 @@ ab==6568==
 						</ul>
 					</aside>
 				</section>
+-->
 
+
+				<section>
+					<img src="allocation/variables/variables.001.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>Um das zu verstehen, müssen wir uns mit dem Heap und Stack beschäftigen?</li>
+							<li>wer von euch kennt das?</li>
+							<li>jeder prozess ist so aufgebaut</li>
+							<li>unten im Ram liegt der Code</li>
+							<li>Dann irgendwelche daten u.s.w.</li>
+							<li>dann der stack</li>
+							<li>dann der heap</li>
+							<li>warum ist der heap ganz oben?</li>
+							<li>der heap kann wachsen, der stack hat immer eine feste größe</li>
+						</ul>
+
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.002.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>typisches Rust Programm</li>
+							<li>schauen wir uns mal an, wie vereinfacht der Ram sich verhält</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.003.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>wir sind an der roten line.</li>
+							<li>beim betreten der funktion weiss rust schon, wieviel speicherplatz er auf dem stack benötigt</li>
+							<li>er kennt den aufbau von dem struct und der compiler kann dies vermutlich so weit runteroptimieren, dass
+							nicht wirklich mehr als die integer werte gespeichert werden müssen.</li>
+							<li>
+								da die werte hart hinterlegt sind, kann er diese vermutlich sogar direkt inlinen.
+							</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.004.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>hier wird dann C initialisiert, auf dem Stack</li>
+							<li>C hat eine andere gültigkeit, nur die Zeile (wegen den geschweiften klammern)</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.005.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>Verlassen wir C so kann einfach der Stackpointer nach unten gesetzt werden</li>
+							<li>das ist die günstigste variante wie ein computer speicher wieder freigeben kann</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.006.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>Wie sieht das ganze bei PHP aus?</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.007.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>wir instanzieren hier $a</li>
+							<li>auf dem stack wird diese variable abgelegt.</li>
+							<li>auf dem heap wird ein objekt erzeugt</li>
+							<li>a hat aber auch eine property, diese muss entsprechend verbunden werden</li>
+							<li>am ende läufts drauf hinaus, dass auf dem heap diese property auch liegt</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.008.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>hier haben wir genau das gleich nochmal ...</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.009.jpeg">
+					<aside class="notes">
+						<ul>
+							<li>hier erhöhen wir nur den refcounter von dem objekt.</li>
+							<li>
+								unterschiedliche sprachen handeln das unterschiedlich
+								<ul>
+									<li>wie gehen wir mit b um? erhöhen wir den refcounter auch? ^^</li>
+								</ul>
+							</li>
+							<ul>
+								<li>es wird komplexer ... :)</li>
+							</ul>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.010.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>schauen wir uns kurz mal den code an</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.011.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>jeder variable in PHP wird durch ein solches C struct repräsentiert.</li>
+							<li>das sorgt dafür, das selbst ein true/false rund 48 bytes (PHP5) groß ist.</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.012.jpeg" >
+				</section>
+				<section>
+					<img src="allocation/variables/variables.013.jpeg" >
+				</section>
+				<section>
+					<img src="allocation/variables/variables.014.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>faktisch ist es unheimlich schwierig das sinnvoll zu findern.</li>
+							<li>nahezu alle sprachen die wir kennen nutzen refcounting</li>
+							<li>Java, Swift, Go</li>
+							<li>Haben alle leicht unterschiedliche implementationen</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.015.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>hier haben wir eine funktion die eine klasse zurückgibt</li>
+							<li>absoluter standard php code</li>
+							<li>in C würde man sowas nicht tun!</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.016.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>schauen wir etwas weiter</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.017.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>und noch was weiter...</li>
+							<li>wie soll php wissen, wann der speicher wieder freigegeben wird?</li>
+							<li>das ganze wird noch schwieriger mit zirkulierenden abhängigkeiten, a hat b, b hat a</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.018.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>wenn wir uns den C code ansehen</li>
+							<li>ist das gut so?</li>
+							<li>C ist so performant, weil es das checking nicht hat.</li>
+							<li>wartbarkeit lässt drastisch nach.</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.019.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>zurück zu rust</li>
+							<li>was passiert hier?</li>
+							<li>nächste slide...</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.020.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>absolut valide, wir geben nur einen pointer weiter, der immer verfügbar ist</li>
+							<li>wir hatten eben vom heap und stack gelernt, der pointer zeit in den code...</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.021.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>wie schauts hier aus?</li>
+							<li>Dieser String (es gibt in Rust unterschiedliche Strings) lebt auf dem Heap</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<img src="allocation/variables/variables.022.jpeg" >
+					<aside class="notes">
+						<ul>
+							<li>Rust versucht den String in die Funktion zu verschieben</li>
+							<li>Die Funktion wird owner vom String</li>
+							<li>Der String wird gelöscht, wenn die Funktion verlassen wird.</li>
+							<li>Das ist toll, weil wir uns eine Kopie ersparen, wenn wir solche objekte hin und her reichen.</li>
+							<li>Das ist toll weil wir haben kein GC, dieses ganze refcounting konstrukt ist nicht notwendig.</li>
+							<li>die funktion ist nicht mehr der owner, daher kann nur eine Funktion den String bekommen.</li>
+						</ul>
+					</aside>
+				</section>
+				
 				<section>
 
 					<h2>Wie löst Rust das "Problem"?</h2>
 
 					<div class="editor">
-pub fn greet(name : String) {
-	println!("Hello {}", name);
+fn greet(x : String) {
+	println!("{}",x);
 }
 
-pub fn main() {
-	let name = "PHPUG".to_string();
-
-	greet(name);
-	greet(name);
+fn main() {
+	let foo = "bar".to_string();
+	greet(foo);
+	greet(foo);
 }
 					</div>
 
+
 					<div class="php_example" data-php-example="https://3v4l.org/OB8EK">
 
-function greet(string $name) {
-    echo "Hello ". $name . "\n";
+function greet(string $x) {
+    echo $x . "\n";
 }
 
-$name = "PHPUG";
+$foo = "bar";
 greet($name);
 greet($name);
 					</div>
@@ -1093,69 +1338,6 @@ fn main() {
 					</aside>
 				</section>
 
-				<section>
-					<h1>Effizientes Memory Management.</h1>
-					<h5>Heap vs. Stack</h5>
-					<aside class="notes">
-						<ul>
-							<li>
-								Warum wird PHP standardmäßig nicht thread safe kompilliert
-								<ul>
-									<li>refcounting ist z.b. kostspieliger</li>
-								</ul>
-							</li>
-						</ul>
-					</aside>
-				</section>
-<!--
-				<section>
-					<div class="editor">
-pub fn main() {
-	let a = "Foo";
-}
-					</div>
-					<div class="php_example" data-php-example="https://3v4l.org/OdOXv">
-$a = "Foo";
-					</div>
-
-				</section>
--->
-
-				<section>
-					<div class="editor">
-pub fn main() {
-	// Embeddet den UTF-8 String "Foo" in der Binary
-	// erstellt eine Referenz auf den "String-Slice" und erlaubt den Zugriff via a
-	let a = "Foo";
-}
-					</div>
-					<div class="php_example" data-php-example="https://3v4l.org/MMpFb">
-// Frag den Ram nach Platz für ne Zval
-//
-// typedef union _zvalue_value {
-//    long lval;                 /* long value */
-//    double dval;               /* double value */
-//    struct {
-//        char *val;
-//        int len;               /* this will always be set for strings */
-//    } str;                     /* string (always has length) */
-//    HashTable *ht;             /* an array */
-//    zend_object_value obj;     /* stores an object store handle, and handlers */
-// } zvalue_value;
-//
-// registriere die variable im GC
-
-$a = "Foo";
-// und prüf hin und wieder und am ende, ob die variable noch gebraucht wird
-
-					</div>
-					<aside class="notes">
-						let a = "Foo".to_string();
-						println!("{}", a);
-
-						den assembler code (release) von der menge zeigen.
-					</aside>
-				</section>
 
 				<section>
 					<div class="editor">
@@ -1416,6 +1598,49 @@ $ cargo run
 							<li>das wars, probiert es aus.</li>
 							<li>hat eher so ein wenig node.js charm</li>
 							<li>garantiert thread safe, selbst wenn ich den code daginter nicht verstehe - rust garantierts mir</li>
+						</ul>
+					</aside>
+				</section>
+
+				<section>
+					<h5>Lets "write" a small realtime slackbot.</h5>
+				</section>
+
+				<section>
+					<pre><code data-trim data-noescape>
+$ cargo new --bin slackfoo
+					</code></pre>
+					<pre><code data-trim data-noescape>
+[dependencies]
+slack = "*"
+					</code></pre>
+					<pre><code data-trim data-noescape>
+extern crate slack;
+
+struct MyHandler;
+
+impl slack::EventHandler for MyHandler {
+    fn on_connect(&mut self, cli: &mut slack::RtmClient) {
+      let _ = cli.send_message("#general", "Hello world! (rtm)");
+    }
+}
+
+fn main() {
+    let mut handler = MyHandler;
+    let mut cli = slack::RtmClient::new("API-KEY");
+    match cli.login_and_run::<MyHandler>(&mut handler) {
+        Ok(_) => {}
+        Err(err) => panic!("Error: {}", err),
+    }
+}
+					</code></pre>
+					<pre><code data-trim data-noescape>
+$ cargo run
+					</code></pre>
+
+					<aside class="notes">
+						<ul>
+							<li>...</li>
 						</ul>
 					</aside>
 				</section>
@@ -1756,6 +1981,18 @@ echo (new Option&lt;String&gt;(null))->unwrap();
 				</section>
 				<section>
 					<img src="projects/tagua-vm.png"/>
+				</section>
+				<section>
+					<img src="projects/ripgrep.png"/>
+				</section>
+				<section>
+					<img src="projects/futures1.png"/>
+				</section>
+				<section>
+					<img src="projects/futures2.png"/>
+				</section>
+				<section>
+					<img src="projects/fontrs.png"/>
 				</section>
 
 				<section>

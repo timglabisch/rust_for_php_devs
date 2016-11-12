@@ -12,14 +12,12 @@ class B {
     public $a;
 }
 
-#gc_disable();
-
 for($i=0;$i<10000000;$i++) {
     $a = new A;
     $b = new B;
     $a->b = $b;
     $b->a = $a;
-    #gc_collect_cycles();
+    gc_collect_cycles();
 }
 
 echo memory_get_usage()."\n";
