@@ -173,6 +173,8 @@
 				-->
 
 				<section>
+					<h1>Rust for PHP devs</h1>
+
 					<div class="editor">
 can't read?
 better come closer =)
@@ -639,6 +641,10 @@ echo sprintf("Tim is %d years old", $tim->age);
 
 						Und wo gleidert sich rust hier ein?
 					</aside>
+				</section>
+
+				<section>
+					<img src="php_c_old.png"/>
 				</section>
 
 
@@ -1628,7 +1634,7 @@ impl slack::EventHandler for MyHandler {
 fn main() {
     let mut handler = MyHandler;
     let mut cli = slack::RtmClient::new("API-KEY");
-    match cli.login_and_run::<MyHandler>(&mut handler) {
+    match cli.login_and_run::&lt;MyHandler&gt;(&mut handler) {
         Ok(_) => {}
         Err(err) => panic!("Error: {}", err),
     }
@@ -1781,7 +1787,7 @@ fn main() {
 }
 
 					</div>
-					<div class="notes">
+					<aside class="notes">
 						Compiler Warnung bei:
 
 						fn main() {
@@ -1791,7 +1797,7 @@ fn main() {
 							println!("{}", names.join(", "));
 						}
 
-					</div>
+					</aside>
 				</section>
 
 				<section>
@@ -2200,6 +2206,86 @@ while (($line = fgets(STDIN)) !== false) {
 if ($lastCount && $lastNumber) {
     echo $lastNumber."\t".$lastCount."\n";
 }
+					</div>
+				</section>
+
+				<section>
+					<h3>Cat Factory</h3>
+					<div class="editor">
+#[derive(Debug)]
+struct Cat {
+    name: String,
+    age: u32
+}
+
+impl Cat {
+    pub fn new(name: String, age: u32) -> Cat {
+        Cat {
+            name: name,
+            age: age
+        }
+    }
+
+    pub fn get_name(&self) -> &str {
+        &self.name
+    }
+}
+
+struct CatFactory {
+    name: Option&lt;String&gt;,
+    age: Option&lt;u32&gt;,
+}
+
+impl CatFactory {
+
+    pub fn new() -> Self {
+        CatFactory {
+            name: None,
+            age: None
+        }
+    }
+
+    pub fn set_name(mut self, name: String) -> Self {
+        self.name = Some(name);
+        self
+    }
+
+    pub fn set_age(mut self, age: u32) -> Self {
+        self.age = Some(age);
+        self
+    }
+
+    pub fn build(self) -> Result&lt;Cat, String&gt; {
+        match (self.name, self.age) {
+            (Some(a), Some(b)) => {
+                Ok(Cat::new(a, b))
+            },
+            _ => Err("Name oder Alter ist nicht gesetzt.".to_string())
+        }
+    }
+}
+
+
+fn main() {
+
+    let cat = CatFactory::new()
+        .set_name("Anubis".to_string())
+        .set_age(17)
+        .build()
+    ;
+
+    println!("{:?}", cat);
+
+    let cat_with_name = CatFactory::new()
+        .set_name("Speedy".to_string())
+        .set_age(20)
+    ;
+
+    //let cat_with_name_and_age = cat_with_name.set_age(20);
+
+    println!("{:?}", cat_with_name.build().unwrap().get_name());
+}
+
 					</div>
 				</section>
 
